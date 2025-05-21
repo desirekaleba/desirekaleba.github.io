@@ -1,7 +1,8 @@
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { Download, ArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import useSiteConfig from "@/hooks/useSiteConfig";
+import ResumeViewer from "@/components/ui/resume-viewer";
 
 const Hero = () => {
   const { hero } = useSiteConfig();
@@ -34,11 +35,13 @@ const Hero = () => {
                 Get in Touch <ArrowRight className="h-4 w-4" />
               </Link>
             </Button>
-            <Button asChild variant="outline" size="lg" className="gap-2">
-              <a href={hero.resumePath} download>
-                <Download className="h-4 w-4" /> Download Resume
-              </a>
-            </Button>
+            <ResumeViewer 
+              resumePath={hero.resumePath}
+              buttonText="View Resume"
+              buttonVariant="outline"
+              buttonSize="lg"
+              className="gap-2"
+            />
           </div>
           
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 py-8 border-t border-border">

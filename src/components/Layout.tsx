@@ -2,10 +2,11 @@ import { ReactNode } from "react";
 import NavBar from "./NavBar";
 import { Button } from "./ui/button";
 import { Link, useLocation } from "react-router-dom";
-import { Github, Linkedin, Mail, Download } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import SocialLinks from "./SocialLinks";
 import useSiteConfig from "@/hooks/useSiteConfig";
 import Seo from "./Seo";
+import ResumeViewer from "./ui/resume-viewer";
 
 interface LayoutProps {
   children: ReactNode;
@@ -51,9 +52,14 @@ const Layout = ({ children, title, description, image }: LayoutProps) => {
                   </li>
                 ))}
                 <li>
-                  <a href={hero.resumePath} download className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
-                    <Download className="h-4 w-4" /> Resume
-                  </a>
+                  <span className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
+                    <ResumeViewer 
+                      resumePath={hero.resumePath}
+                      buttonText="Resume"
+                      buttonVariant="ghost"
+                      className="p-0 h-auto"
+                    />
+                  </span>
                 </li>
               </ul>
             </div>

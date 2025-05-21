@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
 import SocialLinks from "@/components/SocialLinks";
 import Layout from "@/components/Layout";
-import { Calendar, Download } from "lucide-react";
+import { Calendar } from "lucide-react";
 import useSiteConfig from "@/hooks/useSiteConfig";
+import ResumeViewer from "@/components/ui/resume-viewer";
 
 const About = () => {
   const { hero, seo } = useSiteConfig();
@@ -61,12 +62,11 @@ const About = () => {
                     <SocialLinks />
                   </div>
                   
-                  <Button asChild className="w-full">
-                    <a href={hero.resumePath} download>
-                      <Download className="mr-2 h-4 w-4" />
-                      Download CV
-                    </a>
-                  </Button>
+                  <ResumeViewer
+                    resumePath={hero.resumePath}
+                    buttonText="View CV"
+                    fullWidth
+                  />
                 </div>
               </div>
             </div>

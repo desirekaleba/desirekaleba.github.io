@@ -47,7 +47,7 @@ const siteConfig: SiteConfig = {
     name: "Desire Kaleba",
     tagline: "Building Robust Distributed Systems",
     description: "I specialize in high-performance systems programming with Rust and Go, designing scalable architectures that handle millions of transactions daily. With over 8 years of experience, I've led teams and built software that powers critical infrastructure.",
-    resumePath: "/path/to/cv.pdf",
+    resumePath: "/assets/resume.pdf",
     stats: {
       yearsOfExperience: 8,
       projectsCompleted: 20,

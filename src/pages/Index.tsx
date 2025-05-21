@@ -6,8 +6,10 @@ import BlogCard from "@/components/BlogCard";
 import { projects } from "@/data/projects";
 import { blogPosts } from "@/data/blogPosts";
 import Layout from "@/components/Layout";
-import { Download, Briefcase, User, Users } from "lucide-react";
+import { Briefcase, User, Users } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import ResumeViewer from "@/components/ui/resume-viewer";
+import useSiteConfig from "@/hooks/useSiteConfig";
 
 const Index = () => {
   // Get the most recent 3 projects
@@ -49,6 +51,8 @@ const Index = () => {
     }
   ];
 
+  const { hero } = useSiteConfig();
+  
   return (
     <Layout>
       <Hero />
@@ -58,14 +62,14 @@ const Index = () => {
         <div className="container-lg flex flex-col sm:flex-row justify-between items-center gap-4">
           <div>
             <h3 className="font-semibold text-xl">Want to see my full experience?</h3>
-            <p className="text-muted-foreground">Download my resume for a comprehensive overview of my skills and experience.</p>
+            <p className="text-muted-foreground">View my resume for a comprehensive overview of my skills and experience.</p>
           </div>
-          <Button asChild size="lg" className="whitespace-nowrap">
-            <a href="/path/to/cv.pdf" download>
-              <Download className="mr-2 h-4 w-4" />
-              Download Resume
-            </a>
-          </Button>
+          <ResumeViewer 
+            resumePath={hero.resumePath}
+            buttonText="View Resume"
+            buttonSize="lg"
+            className="whitespace-nowrap"
+          />
         </div>
       </div>
       
