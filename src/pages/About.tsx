@@ -2,8 +2,11 @@ import { Button } from "@/components/ui/button";
 import SocialLinks from "@/components/SocialLinks";
 import Layout from "@/components/Layout";
 import { Calendar, Download } from "lucide-react";
+import useSiteConfig from "@/hooks/useSiteConfig";
 
 const About = () => {
+  const { hero, seo } = useSiteConfig();
+  
   const skills = {
     languages: ["Rust", "Go", "TypeScript", "Python", "C/C++"],
     frameworks: ["Tokio", "Actix", "React", "Node.js", "gRPC"],
@@ -34,7 +37,10 @@ const About = () => {
   ];
 
   return (
-    <Layout>
+    <Layout 
+      title="About Me"
+      description="Learn more about my background, skills, and experience as a Staff Software Engineer specializing in Rust and distributed systems."
+    >
       <section className="py-12 md:py-20">
         <div className="container-lg">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -44,19 +50,19 @@ const About = () => {
                   <div className="w-32 h-32 mx-auto bg-muted rounded-full mb-6 overflow-hidden">
                     {/* Placeholder for profile image */}
                     <div className="w-full h-full flex items-center justify-center text-4xl font-bold">
-                      DN
+                      {seo.siteName.split(' ').map(word => word[0]).join('')}
                     </div>
                   </div>
                   
-                  <h3 className="text-center mb-2">Developer Name</h3>
-                  <p className="text-center text-muted-foreground mb-4">Staff Software Engineer</p>
+                  <h3 className="text-center mb-2">{seo.siteName}</h3>
+                  <p className="text-center text-muted-foreground mb-4">{hero.jobTitle}</p>
                   
                   <div className="flex justify-center mb-6">
                     <SocialLinks />
                   </div>
                   
                   <Button asChild className="w-full">
-                    <a href="/path/to/cv.pdf" download>
+                    <a href={hero.resumePath} download>
                       <Download className="mr-2 h-4 w-4" />
                       Download CV
                     </a>

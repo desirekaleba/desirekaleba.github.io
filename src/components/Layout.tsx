@@ -1,24 +1,41 @@
 import { ReactNode } from "react";
 import NavBar from "./NavBar";
 import { Button } from "./ui/button";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Github, Linkedin, Mail, Download } from "lucide-react";
 import SocialLinks from "./SocialLinks";
+import useSiteConfig from "@/hooks/useSiteConfig";
+import Seo from "./Seo";
 
-const Layout = ({ children }: { children: ReactNode }) => {
+interface LayoutProps {
+  children: ReactNode;
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const Layout = ({ children, title, description, image }: LayoutProps) => {
   const currentYear = new Date().getFullYear();
+  const { seo, hero, navigation } = useSiteConfig();
+  const location = useLocation();
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Seo 
+        title={title}
+        description={description}
+        path={location.pathname}
+        image={image}
+      />
       <NavBar />
       <main className="flex-1">{children}</main>
       <footer className="py-8 border-t border-border mt-16">
         <div className="container-xl">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
             <div>
-              <h3 className="text-lg font-semibold mb-4">Developer Name</h3>
+              <h3 className="text-lg font-semibold mb-4">{seo.siteName}</h3>
               <p className="text-muted-foreground mb-4">
-                Staff Software Engineer specializing in distributed systems, Rust, and high-performance computing.
+                {seo.description}
               </p>
               <SocialLinks className="justify-start" />
             </div>
@@ -26,12 +43,15 @@ const Layout = ({ children }: { children: ReactNode }) => {
             <div>
               <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
               <ul className="space-y-2">
-                <li><Link to="/about" className="text-muted-foreground hover:text-foreground transition-colors">About Me</Link></li>
-                <li><Link to="/projects" className="text-muted-foreground hover:text-foreground transition-colors">Projects</Link></li>
-                <li><Link to="/blog" className="text-muted-foreground hover:text-foreground transition-colors">Blog</Link></li>
-                <li><Link to="/contact" className="text-muted-foreground hover:text-foreground transition-colors">Contact</Link></li>
+                {navigation.links.map((link) => (
+                  <li key={link.href}>
+                    <Link to={link.href} className="text-muted-foreground hover:text-foreground transition-colors">
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
                 <li>
-                  <a href="/path/to/cv.pdf" download className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
+                  <a href={hero.resumePath} download className="text-muted-foreground hover:text-foreground transition-colors flex items-center gap-2">
                     <Download className="h-4 w-4" /> Resume
                   </a>
                 </li>
@@ -56,7 +76,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
           
           <div className="border-t border-border pt-6 flex flex-col md:flex-row justify-between items-center">
             <p className="text-muted-foreground text-sm mb-4 md:mb-0">
-              &copy; {currentYear} Developer Name. All rights reserved.
+              &copy; {currentYear} {seo.siteName}. All rights reserved.
             </p>
             <div className="flex items-center gap-4">
               <a href="#" className="text-sm text-muted-foreground hover:text-foreground transition-colors">

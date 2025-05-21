@@ -5,7 +5,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 
 const ThemeToggle = () => {
   const [theme, setTheme] = useState<"light" | "dark" | "system">(
-    () => (localStorage.getItem("theme") as "light" | "dark" | "system") || "system"
+    () => localStorage.getItem("theme") as "light" | "dark" | "system" || "system"
   );
 
   useEffect(() => {
