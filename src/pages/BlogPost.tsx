@@ -2,9 +2,15 @@ import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
 import { blogPosts } from "@/data/blogPosts";
 import { Button } from "@/components/ui/button";
-import { Calendar, ArrowLeft } from "lucide-react";
+import { Calendar, ArrowLeft, Copy, Check } from "lucide-react";
 import SocialLinks from "@/components/SocialLinks";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import ReactMarkdown from "react-markdown";
+import rehypeRaw from "rehype-raw";
+import rehypeSanitize from "rehype-sanitize";
+import remarkGfm from "remark-gfm";
+import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
+import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -41,50 +47,52 @@ const BlogPost = () => {
     day: "numeric",
   });
   
-  // Convert markdown-like content to HTML (basic implementation)
-  const formatContent = (content: string) => {
-    // Split by lines and process
-    const lines = content.split("\n");
-    let html = "";
-    let inCodeBlock = false;
-    let codeContent = "";
+  // Copy code button component
+  const CodeBlock = ({ className, children, language }: { className?: string, children: string, language: string }) => {
+    const [copied, setCopied] = useState(false);
     
-    lines.forEach((line) => {
-      if (line.startsWith("```")) {
-        if (inCodeBlock) {
-          // End code block
-          html += `<pre><code>${codeContent}</code></pre>`;
-          inCodeBlock = false;
-          codeContent = "";
-        } else {
-          // Start code block
-          inCodeBlock = true;
-        }
-        return;
+    const handleCopy = async () => {
+      try {
+        await navigator.clipboard.writeText(children);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      } catch (err) {
+        console.error('Failed to copy text: ', err);
       }
-      
-      if (inCodeBlock) {
-        codeContent += line + "\n";
-        return;
-      }
-      
-      // Handle headers
-      if (line.startsWith("# ")) {
-        html += `<h1 class="text-3xl font-bold mt-8 mb-4">${line.substring(2)}</h1>`;
-      } else if (line.startsWith("## ")) {
-        html += `<h2 class="text-2xl font-bold mt-6 mb-3">${line.substring(3)}</h2>`;
-      } else if (line.startsWith("### ")) {
-        html += `<h3 class="text-xl font-bold mt-5 mb-2">${line.substring(4)}</h3>`;
-      } else if (line.trim() === "") {
-        // Empty line
-        html += "<br/>";
-      } else {
-        // Regular paragraph
-        html += `<p class="mb-4">${line}</p>`;
-      }
-    });
+    };
     
-    return html;
+    return (
+      <div className="relative group">
+        <div className="absolute right-2 top-2 z-10">
+          <button 
+            onClick={handleCopy}
+            className="flex items-center justify-center p-2 rounded-md bg-muted/80 hover:bg-primary hover:text-primary-foreground transition-colors"
+            aria-label={copied ? "Copied!" : "Copy code to clipboard"}
+            title={copied ? "Copied!" : "Copy code to clipboard"}
+          >
+            {copied ? (
+              <div className="flex items-center gap-1">
+                <Check size={14} />
+                <span className="text-xs">Copied!</span>
+              </div>
+            ) : (
+              <div className="flex items-center gap-1">
+                <Copy size={14} />
+                <span className="text-xs">Copy</span>
+              </div>
+            )}
+          </button>
+        </div>
+        <SyntaxHighlighter
+          language={language}
+          style={oneDark}
+          showLineNumbers={true}
+          wrapLines={true}
+        >
+          {children}
+        </SyntaxHighlighter>
+      </div>
+    );
   };
 
   return (
@@ -117,7 +125,33 @@ const BlogPost = () => {
             ))}
           </div>
           
-          <div className="prose" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
+          <div className="prose">
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              rehypePlugins={[rehypeRaw, rehypeSanitize]}
+              components={{
+                code(props) {
+                  const { className, children } = props;
+                  const match = /language-(\w+)/.exec(className || '');
+                  
+                  return match ? (
+                    <CodeBlock 
+                      language={match[1]}
+                      className={className}
+                    >
+                      {String(children).replace(/\n$/, '')}
+                    </CodeBlock>
+                  ) : (
+                    <code className={className}>
+                      {children}
+                    </code>
+                  );
+                }
+              }}
+            >
+              {post.content}
+            </ReactMarkdown>
+          </div>
           
           <div className="border-t border-border mt-12 pt-8">
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">

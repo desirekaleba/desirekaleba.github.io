@@ -108,8 +108,60 @@
   @apply bg-secondary p-4 rounded-lg overflow-x-auto;
 }
 
+.prose pre code {
+  @apply bg-transparent p-0 text-inherit;
+  white-space: pre;
+}
+
+/* Code copy button styles */
+.prose .group {
+  @apply relative;
+}
+
+.prose .group button {
+  @apply transition-opacity duration-200;
+}
+
+/* Add syntax highlighting colors for common languages */
+.language-rust, .language-c, .language-go {
+  color: #333;
+}
+
+.language-rust .keyword, .language-c .keyword, .language-go .keyword {
+  color: #8959a8;
+}
+
+.language-rust .string, .language-c .string, .language-go .string {
+  color: #718c00;
+}
+
+.language-rust .comment, .language-c .comment, .language-go .comment {
+  color: #8e908c;
+  font-style: italic;
+}
+
+.language-rust .function, .language-c .function, .language-go .function {
+  color: #4271ae;
+}
+
 .prose p {
   @apply mb-4;
+}
+
+.prose table {
+  @apply w-full border-collapse mb-6;
+}
+
+.prose table th {
+  @apply px-4 py-2 text-left text-sm font-medium bg-muted;
+}
+
+.prose table td {
+  @apply px-4 py-2 text-sm border-b border-border;
+}
+
+.prose table tr:hover {
+  @apply bg-accent/10;
 }
 
 .section {
