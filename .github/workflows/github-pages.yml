@@ -1,0 +1,94 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js 22 LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+          
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+          
+      - name: Setup pnpm cache
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+            
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Run type check
+        run: pnpm run type-check
+        
+      - name: Run linting
+        run: pnpm run lint
+        
+      - name: Build for GitHub Pages
+        run: pnpm run build
+        env:
+          NODE_ENV: production
+          VITE_SITE_URL: https://desirekaleba.github.io/rust_staff_engineer_personal_site
+          VITE_SITE_NAME: Desire Kaleba
+          VITE_CONTACT_EMAIL: desirekaleba@gmail.com
+          VITE_GITHUB_USERNAME: desirekaleba
+          VITE_LINKEDIN_URL: https://linkedin.com/in/desirekaleba
+          VITE_TWITTER_HANDLE: "@desirekaleba"
+          VITE_ENABLE_ANALYTICS: false
+          VITE_ENABLE_CONTACT_FORM: true
+          VITE_ENABLE_BLOG: true
+          VITE_ENABLE_PROJECTS: true
+          
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+        if: github.ref == 'refs/heads/main'
+        
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        if: github.ref == 'refs/heads/main'
+        with:
+          path: './dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main'
+    
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4 
