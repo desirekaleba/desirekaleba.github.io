@@ -163,10 +163,10 @@ const BlogPost = () => {
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
               <div className="flex items-center gap-4">
                 <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center text-lg font-bold">
-                  DN
+                  DK
                 </div>
                 <div>
-                  <p className="font-medium">Developer Name</p>
+                  <p className="font-medium">Desire Kaleba</p>
                   <p className="text-sm text-muted-foreground">Staff Software Engineer</p>
                 </div>
               </div>
