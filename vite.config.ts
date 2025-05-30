@@ -3,28 +3,31 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
-  server: {
-    host: "::",
-    port: 8080,
-  },
-  plugins: [
-    react(),
-  ],
+export default defineConfig({
+  plugins: [react()],
+  
+  // Base path for GitHub Pages deployment
+  base: process.env.NODE_ENV === 'production' ? '/rust_staff_engineer_personal_site/' : '/',
+  
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  
   build: {
-    // Optimize chunk splitting for better caching
+    target: 'es2022',
+    minify: 'esbuild',
+    sourcemap: true,
     rollupOptions: {
       output: {
         manualChunks: {
-          // Vendor chunks
-          react: ['react', 'react-dom'],
-          router: ['react-router-dom'],
-          ui: [
+          // Core framework chunks
+          'vendor-react': ['react', 'react-dom'],
+          'vendor-router': ['react-router-dom'],
+          
+          // UI component libraries
+          'ui-components': [
             '@radix-ui/react-accordion',
             '@radix-ui/react-alert-dialog',
             '@radix-ui/react-avatar',
@@ -34,40 +37,74 @@ export default defineConfig(({ mode }) => ({
             '@radix-ui/react-popover',
             '@radix-ui/react-scroll-area',
             '@radix-ui/react-select',
-            '@radix-ui/react-separator',
             '@radix-ui/react-tabs',
             '@radix-ui/react-toast',
-            '@radix-ui/react-tooltip',
+            '@radix-ui/react-tooltip'
           ],
-          utils: ['clsx', 'tailwind-merge', 'class-variance-authority'],
-          markdown: ['react-markdown', 'gray-matter', 'marked', 'rehype-raw', 'rehype-sanitize', 'remark-gfm'],
-          charts: ['recharts'],
-          pdf: ['react-pdf', 'pdfjs-dist'],
-        },
-      },
+          
+          // Utilities and helpers
+          'utils': [
+            'clsx',
+            'class-variance-authority',
+            'tailwind-merge',
+            'date-fns'
+          ],
+          
+          // Markdown and content processing
+          'markdown': [
+            'react-markdown',
+            'remark-gfm',
+            'rehype-raw',
+            'rehype-sanitize',
+            'react-syntax-highlighter',
+            'marked'
+          ],
+          
+          // Charts and visualization
+          'charts': ['recharts'],
+          
+          // PDF handling
+          'pdf': ['react-pdf', 'pdfjs-dist'],
+          
+          // Form handling
+          'forms': [
+            'react-hook-form',
+            '@hookform/resolvers',
+            'zod'
+          ],
+          
+          // Other vendor libraries
+          'vendor-misc': [
+            'lucide-react',
+            'next-themes',
+            'sonner',
+            '@tanstack/react-query'
+          ]
+        }
+      }
     },
-    // Optimize assets
-    assetsInlineLimit: 4096,
-    // Enable sourcemaps in production for debugging
-    sourcemap: mode === 'production' ? 'hidden' : true,
-    // Use esbuild for minification (faster and no extra dependency)
-    minify: 'esbuild',
-    // Target modern browsers for better optimization with Node 20 LTS
-    target: 'es2022',
+    chunkSizeWarningLimit: 600
   },
-  // Optimize dependencies
+  
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom'],
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'react-markdown',
+      'remark-gfm'
+    ]
   },
-  // Security headers and optimization for production
+  
+  // Development server configuration
+  server: {
+    port: 3000,
+    host: true
+  },
+  
+  // Preview server configuration
   preview: {
     port: 3000,
-    strictPort: true,
-    headers: {
-      'X-Frame-Options': 'DENY',
-      'X-Content-Type-Options': 'nosniff',
-      'Referrer-Policy': 'strict-origin-when-cross-origin',
-      'Permissions-Policy': 'camera=(), microphone=(), geolocation=()',
-    },
-  },
-}));
+    host: true
+  }
+});
