@@ -1,4 +1,4 @@
-// Manual imports as fallback
+// Manual imports for authentic blog posts
 import masteringRustAsyncMd from './blog-posts/mastering-rust-async.md?raw';
 import distributedSystemsRustMd from './blog-posts/distributed-systems-rust.md?raw';
 import rustPerformanceOptimizationMd from './blog-posts/rust-performance-optimization.md?raw';
@@ -7,6 +7,8 @@ import buildingDistributedCacheRustMd from './blog-posts/building-distributed-ca
 import zeroCopySerializationRustMd from './blog-posts/zero-copy-serialization-rust.md?raw';
 import consensusAlgorithmsRustMd from './blog-posts/consensus-algorithms-rust.md?raw';
 import memoryEfficientDataStructuresRustMd from './blog-posts/memory-efficient-data-structures-rust.md?raw';
+import monorepoArchitectureTypescriptMd from './blog-posts/monorepo-architecture-typescript.md?raw';
+import nodejsMentoringLessonsMd from './blog-posts/nodejs-mentoring-lessons.md?raw';
 
 export interface BlogPost {
     id: number;
@@ -86,7 +88,7 @@ function parseFrontmatter(content: string): { data: FrontmatterData; content: st
   return { data: data as FrontmatterData, content: markdownContent };
 }
 
-// Manual file mapping
+// Manual file mapping with authentic articles
 const blogPostFiles = [
   { name: 'mastering-rust-async', content: masteringRustAsyncMd },
   { name: 'distributed-systems-rust', content: distributedSystemsRustMd },
@@ -96,6 +98,8 @@ const blogPostFiles = [
   { name: 'zero-copy-serialization-rust', content: zeroCopySerializationRustMd },
   { name: 'consensus-algorithms-rust', content: consensusAlgorithmsRustMd },
   { name: 'memory-efficient-data-structures-rust', content: memoryEfficientDataStructuresRustMd },
+  { name: 'monorepo-architecture-typescript', content: monorepoArchitectureTypescriptMd },
+  { name: 'nodejs-mentoring-lessons', content: nodejsMentoringLessonsMd },
 ];
 
 // Helper function to estimate read time based on content
