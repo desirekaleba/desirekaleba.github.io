@@ -14,6 +14,57 @@ A production-ready professional website built with React, TypeScript, Vite, and 
 - **Responsive Design**: Mobile-first approach with modern UI components
 - **Type Safety**: Full TypeScript coverage with strict configuration
 - **CI/CD Ready**: GitHub Actions workflow included
+- **Dynamic Blog System**: Automatic discovery of markdown blog posts
+
+## 📝 Dynamic Blog System
+
+The blog system automatically discovers and loads blog posts from markdown files, eliminating the need to manually maintain a static posts array.
+
+### How It Works
+
+1. **Automatic Discovery**: All `.md` files in `src/data/blog-posts/` are automatically discovered using Vite's `import.meta.glob`
+2. **Frontmatter Parsing**: Each markdown file's frontmatter is parsed to extract metadata
+3. **Content Loading**: The markdown content is included directly in the blog post objects
+4. **Auto-Generated Features**: Read time estimation, tag extraction, and sorting are handled automatically
+
+### Adding a New Blog Post
+
+Simply create a new `.md` file in `src/data/blog-posts/` with proper frontmatter:
+
+```markdown
+---
+title: "Your Blog Post Title"
+slug: "your-blog-post-slug"
+date: "2024-01-15"
+excerpt: "A brief description of your blog post content."
+tags: ["Rust", "Performance", "Systems Programming"]
+featured: true
+---
+
+# Your Blog Post Title
+
+Your markdown content goes here...
+```
+
+### Frontmatter Fields
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `title` | string | ✅ | The blog post title |
+| `slug` | string | ❌ | URL slug (auto-generated from filename if not provided) |
+| `date` | string | ❌ | Publication date in YYYY-MM-DD format |
+| `excerpt` | string | ✅ | Brief description for post previews |
+| `tags` | string[] | ❌ | Array of tags for categorization |
+| `featured` | boolean | ❌ | Whether to feature this post (default: false) |
+| `readTime` | number | ❌ | Read time in minutes (auto-calculated if not provided) |
+
+### Benefits
+
+- **Zero Configuration**: Just add markdown files and they appear automatically
+- **Type Safety**: Full TypeScript support with proper interfaces
+- **Performance**: Uses Vite's optimized import system for fast loading
+- **Developer Experience**: No need to manually update static arrays
+- **Maintainability**: Content and metadata live together in markdown files
 
 ## 🛠️ Development
 
