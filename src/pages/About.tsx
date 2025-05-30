@@ -9,31 +9,49 @@ const About = () => {
   const { hero, seo } = useSiteConfig();
   
   const skills = {
-    languages: ["Rust", "Go", "TypeScript", "Python", "C/C++"],
-    frameworks: ["Tokio", "Actix", "React", "Node.js", "gRPC"],
-    databases: ["PostgreSQL", "MongoDB", "Redis", "Cassandra", "ClickHouse"],
-    cloud: ["AWS", "Kubernetes", "Terraform", "Docker", "GCP"],
-    other: ["Distributed Systems", "Compiler Design", "Performance Tuning", "System Architecture", "Leadership"]
+    languages: ["TypeScript", "JavaScript (ES6+)", "Python", "Go", "Rust", "Java"],
+    frameworks: ["React.js", "Next.js", "Node.js", "NestJS", "Express", "Django"],
+    databases: ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+    cloud: ["AWS", "Docker", "Kubernetes", "Terraform", "CI/CD", "Jenkins"],
+    other: ["Microservices", "Monorepo", "TDD", "BDD", "Agile", "DevOps"]
   };
 
   const experience = [
     {
-      company: "Tech Leader Inc.",
-      title: "Staff Software Engineer",
-      period: "2022 - Present",
-      description: "Leading architecture design for distributed systems processing millions of transactions daily. Mentoring team members and driving adoption of Rust for performance-critical components."
+      company: "StartupBlink",
+      title: "Lead Software Engineer",
+      period: "Oct 2023 - Present",
+      description: "Leading architecture and development of a modular monorepo using TypeScript, Turborepo, Prisma, Redis, and MySQL. Migrated legacy JS scripts to modern, scalable TypeScript packages, improving performance and team collaboration."
     },
     {
-      company: "Scale Systems",
-      title: "Senior Software Engineer",
-      period: "2019 - 2022",
-      description: "Developed high-performance data processing pipelines and microservices architecture. Reduced system latency by 40% through optimization and redesign."
+      company: "StartupBlink",
+      title: "Software Developer",
+      period: "Oct 2022 - Sep 2023",
+      description: "Delivered web apps using React.js, Next.js, Node.js, and TailwindCSS. Boosted delivery speed by 30% by streamlining CI/CD pipelines and introducing code standards."
     },
     {
-      company: "Innovation Labs",
-      title: "Software Engineer",
-      period: "2016 - 2019",
-      description: "Built backend services and APIs for cloud-native applications. Contributed to open-source projects and led transition to containerized infrastructure."
+      company: "Entendre Finance",
+      title: "Full-Stack Developer",
+      period: "Sep 2022 - May 2023",
+      description: "Built backend infrastructure using Node.js, AWS Lambda, and MongoDB in a monorepo architecture. Integrated blockchain ecosystems (Solana, Arbitrum, Optimism)."
+    },
+    {
+      company: "SideHustle",
+      title: "Node.js Mentor & Technical Curriculum Developer",
+      period: "Feb 2022 - Dec 2022",
+      description: "Mentored over 1,800 junior developers on backend architecture, resilience, and real-world problem solving. Designed and recorded a Node.js curriculum, quizzes, and advanced capstone challenges."
+    },
+    {
+      company: "ManakNight Digital",
+      title: "Senior Software Developer",
+      period: "May 2021 - July 2022",
+      description: "Developed secure APIs with OAuth2, AWS, and MongoDB. Increased client product sales by 70% by reducing bugs and improving feature velocity."
+    },
+    {
+      company: "Fasto Services",
+      title: "Software Developer",
+      period: "Oct 2019 - May 2021",
+      description: "Designed scalable cloud solutions using Docker, AWS, Terraform, and Ansible. Led multiple deployments and performance-tuning efforts in production systems."
     }
   ];
 
@@ -76,19 +94,24 @@ const About = () => {
               
               <div className="prose max-w-none mb-12">
                 <p className="text-lg">
-                  I'm a Staff Software Engineer with over 10 years of experience building robust, scalable systems. 
-                  My expertise lies in distributed systems architecture, high-performance computing, and systems programming.
+                  I'm a Lead Full-Stack Engineer with 7+ years of experience building scalable applications and 
+                  leading distributed engineering teams. My expertise lies in TypeScript, Node.js, and cloud-native 
+                  architecture, with a strong foundation in both backend and frontend development.
                 </p>
                 
                 <p>
-                  I specialize in designing and implementing complex backend systems that handle millions of transactions 
-                  daily. My focus is on creating reliable, maintainable, and efficient software that solves real business problems.
+                  I specialize in designing and implementing complex backend systems, microservices architectures, 
+                  and modern monorepo solutions. My recent work includes leading the architecture and development 
+                  of modular systems using TypeScript, Turborepo, Prisma, and various cloud technologies. I'm 
+                  passionate about solving complex challenges through clean code and engineering best practices.
                 </p>
                 
                 <p>
-                  Throughout my career, I've led engineering teams, mentored junior developers, and contributed to 
-                  architectural decisions that shaped product direction. I'm passionate about clean code, thoughtful 
-                  system design, and building software that stands the test of time.
+                  Throughout my career, I've mentored over 1,800 junior developers, led cross-functional teams, 
+                  and contributed to architectural decisions that shaped product direction. I have extensive 
+                  experience with blockchain ecosystems, having integrated solutions with Solana, Arbitrum, 
+                  and Optimism. I believe in continuous learning, knowledge sharing, and building software 
+                  that makes a real impact.
                 </p>
               </div>
               

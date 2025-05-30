@@ -20,32 +20,32 @@ const Index = () => {
 
   // Skills data
   const skills = {
-    languages: ["Rust", "Go", "TypeScript", "Python", "C/C++"],
-    frameworks: ["Tokio", "Actix", "React", "Node.js", "gRPC"],
-    databases: ["PostgreSQL", "MongoDB", "Redis", "Cassandra", "ClickHouse"],
-    cloud: ["AWS", "Kubernetes", "Terraform", "Docker", "GCP"],
-    other: ["Distributed Systems", "Compiler Design", "Performance Tuning", "System Architecture", "Leadership"]
+    languages: ["TypeScript", "JavaScript (ES6+)", "Python", "Go", "Rust", "Java"],
+    frameworks: ["React.js", "Next.js", "Node.js", "NestJS", "Express", "Django"],
+    databases: ["PostgreSQL", "MySQL", "MongoDB", "Redis"],
+    cloud: ["AWS", "Docker", "Kubernetes", "Terraform", "CI/CD", "Jenkins"],
+    other: ["Microservices", "Monorepo", "TDD", "BDD", "Agile", "DevOps"]
   };
 
   // Experience data
   const experience = [
     {
-      company: "Tech Leader Inc.",
-      title: "Staff Software Engineer",
-      period: "2022 - Present",
-      description: "Leading architecture design for distributed systems processing millions of transactions daily. Mentoring team members and driving adoption of Rust for performance-critical components."
+      company: "StartupBlink",
+      title: "Lead Software Engineer",
+      period: "Oct 2023 - Present",
+      description: "Leading architecture and development of a modular monorepo using TypeScript, Turborepo, Prisma, Redis, and MySQL. Migrated legacy JS scripts to modern, scalable TypeScript packages, improving performance and team collaboration."
     },
     {
-      company: "Scale Systems",
-      title: "Senior Software Engineer",
-      period: "2019 - 2022",
-      description: "Developed high-performance data processing pipelines and microservices architecture. Reduced system latency by 40% through optimization and redesign."
+      company: "StartupBlink",
+      title: "Software Developer",
+      period: "Oct 2022 - Sep 2023",
+      description: "Delivered web apps using React.js, Next.js, Node.js, and TailwindCSS. Boosted delivery speed by 30% by streamlining CI/CD pipelines and introducing code standards."
     },
     {
-      company: "Innovation Labs",
-      title: "Software Engineer",
-      period: "2016 - 2019",
-      description: "Built backend services and APIs for cloud-native applications. Contributed to open-source projects and led transition to containerized infrastructure."
+      company: "Entendre Finance",
+      title: "Full-Stack Developer",
+      period: "Sep 2022 - May 2023",
+      description: "Built backend infrastructure using Node.js, AWS Lambda, and MongoDB in a monorepo architecture. Integrated blockchain ecosystems (Solana, Arbitrum, Optimism)."
     }
   ];
 

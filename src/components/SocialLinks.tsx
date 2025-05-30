@@ -6,7 +6,7 @@ const SocialLinks = ({ className = "" }: { className?: string }) => {
     <div className={`flex space-x-4 ${className}`}>
       <Button variant="outline" size="icon" asChild>
         <a
-          href="https://github.com/yourusername"
+          href="https://github.com/desirekaleba"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="GitHub"
@@ -16,7 +16,7 @@ const SocialLinks = ({ className = "" }: { className?: string }) => {
       </Button>
       <Button variant="outline" size="icon" asChild>
         <a
-          href="https://linkedin.com/in/yourusername"
+          href="https://www.linkedin.com/in/desire-kaleba-a0a122197"
           target="_blank"
           rel="noopener noreferrer"
           aria-label="LinkedIn"
@@ -26,7 +26,7 @@ const SocialLinks = ({ className = "" }: { className?: string }) => {
       </Button>
       <Button variant="outline" size="icon" asChild>
         <a
-          href="mailto:your.email@example.com"
+          href="mailto:desirekaleba@gmail.com"
           aria-label="Email"
         >
           <Mail className="h-5 w-5" />
