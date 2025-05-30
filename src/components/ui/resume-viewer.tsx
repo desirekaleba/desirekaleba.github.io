@@ -1,5 +1,5 @@
 import React, { useRef } from "react";
-import { Dialog, DialogContent, DialogTrigger, DialogClose } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTrigger, DialogClose, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Download, ExternalLink, Eye, Printer, X } from "lucide-react";
 import useSiteConfig from "@/hooks/useSiteConfig";
@@ -153,6 +153,12 @@ const ResumeViewer = ({
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-4xl h-[90vh] p-0 flex flex-col overflow-hidden sm:rounded-lg">
+        {/* Hidden accessibility components */}
+        <DialogTitle className="sr-only">Resume - {seo.siteName}</DialogTitle>
+        <DialogDescription className="sr-only">
+          Professional resume and CV for {seo.siteName}, {hero.jobTitle}. View, print, or download the resume.
+        </DialogDescription>
+        
         {/* Custom header with actions and proper spacing */}
         <div className="p-4 border-b flex flex-col sm:flex-row justify-between items-start sm:items-center space-y-2 sm:space-y-0">
           <div className="flex justify-between items-center w-full sm:w-auto">
@@ -201,11 +207,11 @@ const ResumeViewer = ({
               <h1 className="text-2xl sm:text-3xl font-bold mb-2">{seo.siteName}</h1>
               <p className="text-base sm:text-lg font-medium text-muted-foreground mb-2">{hero.jobTitle}</p>
               <div className="flex flex-col sm:flex-row justify-center items-center gap-1 sm:gap-2 text-xs sm:text-sm text-muted-foreground">
-                <span>contact@desirekaleba.com</span>
+                <span>desirekaleba@gmail.com</span>
                 <span className="hidden sm:inline">•</span>
-                <span>desirekaleba.com</span>
+                <span>LinkedIn</span>
                 <span className="hidden sm:inline">•</span>
-                <span>San Francisco, CA</span>
+                <span>GitHub</span>
               </div>
             </div>
             
@@ -213,10 +219,10 @@ const ResumeViewer = ({
             <div className="mb-8">
               <h2 className="text-lg sm:text-xl font-semibold border-b border-border pb-2 mb-4">Professional Summary</h2>
               <p className="text-muted-foreground">
-                Staff Software Engineer with over 8 years of experience building robust, scalable systems. 
-                Expertise in distributed systems architecture, high-performance computing, and systems programming
-                with Rust and Go. Proven track record leading engineering teams and driving adoption of performance-critical
-                technologies.
+                Lead Full-Stack Engineer with 7+ years of experience building scalable applications and leading distributed engineering teams. 
+                Proven expertise in TypeScript, Node.js, and cloud-native architecture, with a strong foundation in both backend and frontend development. 
+                Passionate about solving complex challenges through clean code, mentoring developers, and continuously improving engineering practices. 
+                Recently led a full migration to a monorepo architecture and built robust microservices used by thousands.
               </p>
             </div>
             
@@ -227,52 +233,94 @@ const ResumeViewer = ({
               <div className="space-y-6">
                 <div>
                   <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                    <h3 className="font-bold text-base sm:text-lg">Staff Software Engineer</h3>
+                    <h3 className="font-bold text-base sm:text-lg">Lead Software Engineer</h3>
                     <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
-                      <span className="font-medium">Tech Leader Inc.</span>
+                      <span className="font-medium">StartupBlink</span>
                       <span className="mx-2">•</span>
-                      <span>2022 - Present</span>
+                      <span>Oct 2023 - Present</span>
                     </div>
                   </div>
                   <ul className="list-disc ml-5 text-muted-foreground space-y-1 text-sm">
-                    <li>Led architecture design for distributed systems processing millions of transactions daily</li>
-                    <li>Mentored team members and drove adoption of Rust for performance-critical components</li>
-                    <li>Implemented performance optimizations that reduced system latency by 35%</li>
-                    <li>Designed and implemented a custom scheduler for high-throughput task processing</li>
+                    <li>Leading architecture and development of a modular monorepo using TypeScript, Turborepo, Prisma, Redis, and MySQL</li>
+                    <li>Migrated legacy JS scripts to modern, scalable TypeScript packages, improving performance and team collaboration</li>
+                    <li>Drive technical design decisions and mentor a cross-functional team on best practices and clean code</li>
                   </ul>
                 </div>
                 
                 <div>
                   <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                    <h3 className="font-bold text-base sm:text-lg">Senior Software Engineer</h3>
+                    <h3 className="font-bold text-base sm:text-lg">Software Developer</h3>
                     <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
-                      <span className="font-medium">Scale Systems</span>
+                      <span className="font-medium">StartupBlink</span>
                       <span className="mx-2">•</span>
-                      <span>2019 - 2022</span>
+                      <span>Oct 2022 - Sep 2023</span>
                     </div>
                   </div>
                   <ul className="list-disc ml-5 text-muted-foreground space-y-1 text-sm">
-                    <li>Developed high-performance data processing pipelines and microservices architecture</li>
-                    <li>Reduced system latency by 40% through optimization and redesign</li>
-                    <li>Led migration from monolithic architecture to microservices</li>
-                    <li>Implemented real-time analytics system with Cassandra and Kafka</li>
+                    <li>Delivered web apps using React.js, Next.js, Node.js, and TailwindCSS</li>
+                    <li>Boosted delivery speed by 30% by streamlining CI/CD pipelines and introducing code standards</li>
+                    <li>Actively involved in stakeholder communication, ensuring tech alignment with business goals</li>
                   </ul>
                 </div>
                 
                 <div>
                   <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                    <h3 className="font-bold text-base sm:text-lg">Software Engineer</h3>
+                    <h3 className="font-bold text-base sm:text-lg">Full-Stack Developer</h3>
                     <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
-                      <span className="font-medium">Innovation Labs</span>
+                      <span className="font-medium">Entendre Finance</span>
                       <span className="mx-2">•</span>
-                      <span>2016 - 2019</span>
+                      <span>Sep 2022 - May 2023</span>
                     </div>
                   </div>
                   <ul className="list-disc ml-5 text-muted-foreground space-y-1 text-sm">
-                    <li>Built backend services and APIs for cloud-native applications</li>
-                    <li>Contributed to open-source projects and led transition to containerized infrastructure</li>
-                    <li>Implemented CI/CD pipelines and automated testing frameworks</li>
-                    <li>Developed RESTful and gRPC APIs for cloud services</li>
+                    <li>Built backend infrastructure using Node.js, AWS Lambda, and MongoDB in a monorepo architecture</li>
+                    <li>Integrated blockchain ecosystems (Solana, Arbitrum, Optimism)</li>
+                    <li>Created performant lambda functions and built modern frontends with Gatsby and Next.js</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                    <h3 className="font-bold text-base sm:text-lg">Node.js Mentor & Technical Curriculum Developer</h3>
+                    <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                      <span className="font-medium">SideHustle</span>
+                      <span className="mx-2">•</span>
+                      <span>Feb 2022 - Dec 2022</span>
+                    </div>
+                  </div>
+                  <ul className="list-disc ml-5 text-muted-foreground space-y-1 text-sm">
+                    <li>Mentored over 1,800 junior developers on backend architecture, resilience, and real-world problem solving</li>
+                    <li>Designed and recorded a Node.js curriculum, quizzes, and advanced capstone challenges</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                    <h3 className="font-bold text-base sm:text-lg">Senior Software Developer</h3>
+                    <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                      <span className="font-medium">ManakNight Digital</span>
+                      <span className="mx-2">•</span>
+                      <span>May 2021 - July 2022</span>
+                    </div>
+                  </div>
+                  <ul className="list-disc ml-5 text-muted-foreground space-y-1 text-sm">
+                    <li>Developed secure APIs with OAuth2, AWS, and MongoDB</li>
+                    <li>Increased client product sales by 70% by reducing bugs and improving feature velocity</li>
+                  </ul>
+                </div>
+                
+                <div>
+                  <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
+                    <h3 className="font-bold text-base sm:text-lg">Software Developer</h3>
+                    <div className="flex items-center text-xs sm:text-sm text-muted-foreground">
+                      <span className="font-medium">Fasto Services</span>
+                      <span className="mx-2">•</span>
+                      <span>Oct 2019 - May 2021</span>
+                    </div>
+                  </div>
+                  <ul className="list-disc ml-5 text-muted-foreground space-y-1 text-sm">
+                    <li>Designed scalable cloud solutions using Docker, AWS, Terraform, and Ansible</li>
+                    <li>Led multiple deployments and performance-tuning efforts in production systems</li>
                   </ul>
                 </div>
               </div>
@@ -280,39 +328,30 @@ const ResumeViewer = ({
             
             {/* Skills */}
             <div className="mb-8">
-              <h2 className="text-lg sm:text-xl font-semibold border-b border-border pb-2 mb-4">Skills & Expertise</h2>
+              <h2 className="text-lg sm:text-xl font-semibold border-b border-border pb-2 mb-4">Technical Skills</h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="p-3 rounded-md bg-muted">
                   <h3 className="font-medium mb-2">Programming Languages</h3>
                   <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Rust</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Go</span>
                     <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">TypeScript</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">JavaScript (ES6+)</span>
                     <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Python</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">C/C++</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Go</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Rust</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Java</span>
                   </div>
                 </div>
                 
                 <div className="p-3 rounded-md bg-muted">
-                  <h3 className="font-medium mb-2">Frameworks</h3>
+                  <h3 className="font-medium mb-2">Frontend & Backend</h3>
                   <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Tokio</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Actix</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">React</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">React.js</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Next.js</span>
                     <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Node.js</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">gRPC</span>
-                  </div>
-                </div>
-                
-                <div className="p-3 rounded-md bg-muted">
-                  <h3 className="font-medium mb-2">Databases</h3>
-                  <div className="flex flex-wrap gap-2">
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">PostgreSQL</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">MongoDB</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Redis</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Cassandra</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">ClickHouse</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">NestJS</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Express</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Django</span>
                   </div>
                 </div>
                 
@@ -320,11 +359,47 @@ const ResumeViewer = ({
                   <h3 className="font-medium mb-2">Cloud & DevOps</h3>
                   <div className="flex flex-wrap gap-2">
                     <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">AWS</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Docker</span>
                     <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Kubernetes</span>
                     <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Terraform</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Docker</span>
-                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">GCP</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">CI/CD</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Jenkins</span>
                   </div>
+                </div>
+                
+                <div className="p-3 rounded-md bg-muted">
+                  <h3 className="font-medium mb-2">Databases & Architecture</h3>
+                  <div className="flex flex-wrap gap-2">
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">PostgreSQL</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">MySQL</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">MongoDB</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Redis</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Microservices</span>
+                    <span className="px-3 py-1 bg-secondary text-secondary-foreground rounded-full text-xs sm:text-sm">Monorepo</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {/* Certifications */}
+            <div className="mb-8">
+              <h2 className="text-lg sm:text-xl font-semibold border-b border-border pb-2 mb-4">Certifications</h2>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">AWS Certified Cloud Practitioner</span>
+                  <span className="text-sm text-muted-foreground">2023</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">Google Cloud Fundamentals</span>
+                  <span className="text-sm text-muted-foreground">2023</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">Advanced React – Triplebyte Certified</span>
+                  <span className="text-sm text-muted-foreground">2023</span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">NodeJS E-Commerce API</span>
+                  <span className="text-sm text-muted-foreground">2021</span>
                 </div>
               </div>
             </div>
@@ -336,21 +411,12 @@ const ResumeViewer = ({
               <div>
                 <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
                   <div>
-                    <h3 className="font-bold text-base sm:text-lg">Master of Science in Computer Science</h3>
-                    <p className="text-muted-foreground">Stanford University</p>
+                    <h3 className="font-bold text-base sm:text-lg">Bachelor's Degree in Computer Science</h3>
+                    <p className="text-muted-foreground">International University of East Africa</p>
                   </div>
-                  <p className="text-sm text-muted-foreground">2014 - 2016</p>
+                  <p className="text-sm text-muted-foreground">2016 - 2019</p>
                 </div>
-              </div>
-              
-              <div className="mt-4">
-                <div className="flex flex-col md:flex-row md:justify-between md:items-baseline mb-2">
-                  <div>
-                    <h3 className="font-bold text-base sm:text-lg">Bachelor of Science in Computer Engineering</h3>
-                    <p className="text-muted-foreground">MIT</p>
-                  </div>
-                  <p className="text-sm text-muted-foreground">2010 - 2014</p>
-                </div>
+                <p className="text-sm text-muted-foreground">Kampala, Uganda</p>
               </div>
             </div>
           </div>
