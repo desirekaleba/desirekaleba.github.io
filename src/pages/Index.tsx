@@ -15,10 +15,8 @@ const Index = () => {
   // Get the most recent 3 projects
   const featuredProjects = projects.slice(0, 3);
   
-  // Get the most recent 3 blog posts
-  const recentPosts = [...blogPosts]
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-    .slice(0, 3);
+  // Get the most recent 3 blog posts (already sorted by date in blogPosts.ts)
+  const recentPosts = blogPosts.slice(0, 3);
 
   // Skills data
   const skills = {

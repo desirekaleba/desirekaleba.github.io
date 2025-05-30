@@ -1,6 +1,6 @@
 import Layout from "@/components/Layout";
 import BlogCard from "@/components/BlogCard";
-import { blogPosts } from "@/data/blogPosts";
+import { blogPosts, getAllTags, getBlogPostsByTag } from "@/data/blogPosts";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
@@ -8,19 +8,15 @@ const Blog = () => {
   const [selectedTag, setSelectedTag] = useState<string | null>(null);
   
   // Extract all unique tags from blog posts
-  const allTags = Array.from(
-    new Set(blogPosts.flatMap((post) => post.tags))
-  ).sort();
+  const allTags = getAllTags();
   
   // Filter blog posts by selected tag
   const filteredPosts = selectedTag
-    ? blogPosts.filter((post) => post.tags.includes(selectedTag))
+    ? getBlogPostsByTag(selectedTag)
     : blogPosts;
   
-  // Sort posts by date (newest first)
-  const sortedPosts = [...filteredPosts].sort(
-    (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-  );
+  // Posts are already sorted by date in blogPosts.ts
+  const sortedPosts = filteredPosts;
 
   return (
     <Layout>

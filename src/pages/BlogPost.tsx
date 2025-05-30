@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import Layout from "@/components/Layout";
-import { blogPosts } from "@/data/blogPosts";
+import { getBlogPostBySlug } from "@/data/blogPosts";
 import { Button } from "@/components/ui/button";
 import { Calendar, ArrowLeft, Copy, Check } from "lucide-react";
 import SocialLinks from "@/components/SocialLinks";
@@ -14,7 +14,7 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const BlogPost = () => {
   const { slug } = useParams<{ slug: string }>();
-  const post = blogPosts.find((p) => p.slug === slug);
+  const post = slug ? getBlogPostBySlug(slug) : undefined;
   
   useEffect(() => {
     // Scroll to top when post changes
@@ -111,6 +111,12 @@ const BlogPost = () => {
           <div className="flex items-center text-muted-foreground mb-6">
             <Calendar className="h-4 w-4 mr-1" />
             <span>{formattedDate}</span>
+            {post.readTime && (
+              <>
+                <span className="mx-2">•</span>
+                <span>{post.readTime} min read</span>
+              </>
+            )}
           </div>
           
           <div className="flex flex-wrap gap-2 mb-8">
@@ -125,7 +131,7 @@ const BlogPost = () => {
             ))}
           </div>
           
-          <div className="prose">
+          <div className="prose prose-lg max-w-none dark:prose-invert">
             <ReactMarkdown
               remarkPlugins={[remarkGfm]}
               rehypePlugins={[rehypeRaw, rehypeSanitize]}
@@ -149,7 +155,7 @@ const BlogPost = () => {
                 }
               }}
             >
-              {post.content}
+              {post.content || ''}
             </ReactMarkdown>
           </div>
           
