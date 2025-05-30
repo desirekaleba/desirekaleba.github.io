@@ -6,8 +6,8 @@ import path from "path";
 export default defineConfig({
   plugins: [react()],
   
-  // Base path for GitHub Pages deployment
-  base: process.env.NODE_ENV === 'production' ? '/rust_staff_engineer_personal_site/' : '/',
+  // Base path for GitHub Pages deployment (personal site uses root path)
+  base: '/',
   
   resolve: {
     alias: {

@@ -42,7 +42,7 @@ const siteConfig: SiteConfig = {
     title: "Desire Kaleba | Lead Software Engineer & Distributed Systems Specialist",
     description: "Lead Full-Stack Engineer with 7+ years building scalable applications and distributed systems. Expertise in TypeScript, Node.js, Go, Rust, and cloud-native architecture.",
     siteName: "Desire Kaleba",
-    url: "https://desirekaleba.github.io/rust_staff_engineer_personal_site",
+    url: "https://desirekaleba.github.io",
     openGraph: {
       image: "/images/og-image.jpg",
     },
