@@ -39,8 +39,8 @@ interface SiteConfig {
 
 const siteConfig: SiteConfig = {
   seo: {
-    title: "Desire Kaleba | Staff Software Engineer",
-    description: "Staff Software Engineer specializing in Rust, distributed systems, and high-performance computing. Building scalable infrastructure that handles millions of requests daily.",
+    title: "Desire Kaleba | Lead Software Engineer & Distributed Systems Specialist",
+    description: "Lead Full-Stack Engineer with 7+ years building scalable applications and distributed systems. Expertise in TypeScript, Node.js, Go, Rust, and cloud-native architecture.",
     siteName: "Desire Kaleba",
     url: "https://desirekaleba.github.io/rust_staff_engineer_personal_site",
     openGraph: {
@@ -48,17 +48,17 @@ const siteConfig: SiteConfig = {
     },
   },
   hero: {
-    jobTitle: "Staff Software Engineer",
+    jobTitle: "Lead Software Engineer & Distributed Systems Specialist",
     greeting: "Hello, I'm",
     name: "Desire Kaleba",
-    tagline: "Building Robust Distributed Systems with Rust",
-    description: "I specialize in high-performance systems programming with Rust and Go, designing scalable architectures that handle millions of transactions daily. With over 8 years of experience, I've led teams building mission-critical infrastructure, from distributed caches to blockchain protocols.",
+    tagline: "Building Scalable Applications & Distributed Systems",
+    description: "Lead Full-Stack Engineer with 7+ years of experience building scalable applications and leading distributed engineering teams. Proven expertise in TypeScript, Node.js, Go, and Rust, with deep knowledge of cloud-native architecture, microservices, and distributed systems. Currently leading architecture and development of modular monorepo solutions used by thousands.",
     resumePath: "/assets/resume.pdf",
     stats: {
-      yearsOfExperience: 8,
-      projectsCompleted: 25,
-      leadershipPositions: 6,
-      technicalPublications: 15,
+      yearsOfExperience: 7,
+      projectsCompleted: 30,
+      leadershipPositions: 3,
+      technicalPublications: 8,
     },
   },
   navigation: {
@@ -89,7 +89,7 @@ const siteConfig: SiteConfig = {
   contact: {
     email: "desirekaleba@gmail.com",
     github: "https://github.com/desirekaleba",
-    linkedin: "https://linkedin.com/in/desirekaleba",
+    linkedin: "https://www.linkedin.com/in/desire-kaleba-a0a122197/",
     twitter: "https://twitter.com/desirekaleba",
   },
 };
