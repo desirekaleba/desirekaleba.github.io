@@ -1,0 +1,32 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import WorkList from '../components/WorkList.astro';
+import StackGraph from '../components/StackGraph.astro';
+import HowIBuild from '../components/HowIBuild.astro';
+import Experience from '../components/Experience.astro';
+import Contact from '../components/Contact.astro';
+import { site } from '../data/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.title,
+  email: `mailto:${site.email}`,
+  url: site.url,
+  sameAs: [site.github, site.linkedin],
+  worksFor: { '@type': 'Organization', name: 'StartupBlink', url: 'https://www.startupblink.com' },
+  address: { '@type': 'PostalAddress', addressLocality: 'Nairobi', addressCountry: 'KE' },
+  knowsLanguage: site.languages,
+};
+---
+
+<Base title="Desire Kaleba · Lead engineer who builds and runs products" jsonLd={jsonLd}>
+  <Hero />
+  <WorkList />
+  <StackGraph />
+  <HowIBuild />
+  <Experience />
+  <Contact />
+</Base>

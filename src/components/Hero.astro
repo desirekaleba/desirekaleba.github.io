@@ -1,0 +1,528 @@
+---
+import { Board, type Variant } from '../scripts/board/board';
+import { site } from '../data/site';
+
+interface Props {
+  variant?: Variant;
+}
+const { variant = 'home' } = Astro.props;
+
+// Server-render the flat board for both sizes, so the page reads correctly before (or without) JavaScript.
+const sizes = [false, true].map((mobile) => {
+  const b = new Board({ variant, mobile });
+  const name = b.namePanel();
+  const cols = b.layout().cols;
+  const nameCols = Math.max(...name.lines.map((l) => l.length));
+  const cells = (text: string, cls: string, n: number) =>
+    Array.from({ length: n }, (_, i) => ({ ch: text[i] ?? ' ', c: 'c-' + (cls[i] ?? 'd') }));
+  return {
+    mobile,
+    cols,
+    nameCols,
+    name: name.lines.map((l, r) => cells(l, name.cls[r] ?? '', nameCols)),
+    print: b.print(),
+    rows: b.rows().map((r) => cells(r.text, r.cls, cols)),
+  };
+});
+const isHome = variant === 'home';
+---
+
+<section class="hero" aria-labelledby="dk-name" data-board data-variant={variant}>
+  <h1 id="dk-name" class="sr-only">{isHome ? 'Desire Kaleba, lead engineer in Nairobi' : 'Page not found'}</h1>
+
+  <div class="scene">
+    {sizes.map((s) => (
+      <div class:list={['flat', s.mobile ? 'flat-mobile' : 'flat-desktop']} aria-hidden="true" style={`--cols:${s.cols};--name-cols:${s.nameCols}`}>
+        <div class="flat-name">
+          {s.name.map((row) => <div class="flat-row">{row.map((c) => <span class={c.c}>{c.ch}</span>)}</div>)}
+        </div>
+        <div class="flat-print"><span>{s.print.left}</span><span>{s.print.right}</span></div>
+        <div class="flat-code">
+          {s.rows.map((row) => <div class="flat-row">{row.map((c) => <span class={c.c}>{c.ch}</span>)}</div>)}
+        </div>
+      </div>
+    ))}
+    <canvas aria-hidden="true"></canvas>
+  </div>
+
+  {isHome && (
+    <ul class="sr-only">
+      <li>Lead engineer at StartupBlink, based in Nairobi, Kenya, working remotely. Speaks English, French and Swahili.</li>
+      <li>PageVow: live, 123 users, 600+ pages generated, zero marketing.</li>
+      <li>VelaBid: public beta, collector-car auctions where late bids extend the close.</li>
+      <li>StartupBlink: 596K+ requests a day, about 70% served from cache.</li>
+      <li>Email: {site.email}</li>
+    </ul>
+  )}
+
+  {isHome ? (
+    <div class="below">
+      <p class="lede">I build products end to end, then I run them.</p>
+      <div class="intro">
+        <p>
+          I'm lead engineer at StartupBlink, working remotely from Nairobi. I lead seven engineers on a platform that
+          serves 596K+ requests a day. I built PageVow and VelaBid on my own, end to end. I work AI-first, and I review
+          and own everything that ships.
+        </p>
+        <div class="links">
+          <a href={`mailto:${site.email}`} class="primary">{site.email}</a>
+          <a href={site.github}>GitHub</a>
+          <a href={site.linkedin}>LinkedIn</a>
+          <a href={site.resume}>Résumé</a>
+        </div>
+      </div>
+      <div class="play" role="group" aria-label="Play with the board" data-controls hidden>
+        <div class="msg">
+          <label for="board-msg"># write on line 11 of the board</label>
+          <input id="board-msg" type="text" maxlength="27" autocomplete="off" spellcheck="false" placeholder="type here" data-msg />
+        </div>
+        <div class="buttons">
+          <button type="button" class="btn btn-primary" data-bid>velabid.bid()</button>
+          <button type="button" class="btn" data-next>next()</button>
+          <button type="button" class="btn" data-skip hidden>skip(10)</button>
+        </div>
+        <p class="note" aria-live="polite" data-note></p>
+        <span class="demo-note">Demo only: a bid in the last 30 s pushes the close back to 0:30.</span>
+      </div>
+    </div>
+  ) : (
+    <div class="below-404">
+      <p class="lede">Nothing ships at this address.</p>
+      <p>The link may be old, or mistyped. Here's what does exist:</p>
+      <ul>
+        <li><a href="/">/ — home</a></li>
+        <li><a href="/work/pagevow">/work/pagevow</a></li>
+        <li><a href="/work/velabid">/work/velabid</a></li>
+        <li><a href="/work/startupblink">/work/startupblink</a></li>
+        <li><a href={`mailto:${site.email}`}>mailto:{site.email}</a></li>
+      </ul>
+    </div>
+  )}
+
+  <div class="console" data-console hidden>
+    <div class="console-head">
+      <span><span class="dot">●</span> board.log · live · real events from this page</span>
+      <span data-hud></span>
+    </div>
+    <ol role="log" aria-live="off" aria-label="Board event log" data-log></ol>
+  </div>
+</section>
+
+<style>
+  .hero {
+    /* leave room for the headline above the fold */
+    --scene-h: clamp(480px, min(58vw, 100svh - 190px), 860px);
+  }
+  .scene {
+    position: relative;
+    height: var(--scene-h);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px var(--side);
+    overflow: hidden;
+  }
+  canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  .scene.is-3d canvas {
+    opacity: 1;
+  }
+  .scene.is-3d .flat {
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+
+  /* ---- the flat board ---- */
+  .flat {
+    --flap: #1f2024;
+    --glyph: #f3f1ec;
+    --key: #ffb000;
+    --gmuted: #9aa0a8;
+    --gap: 0.25cqw;
+    container-type: inline-size;
+    width: min(100%, calc((var(--scene-h) - 64px) * 1.45));
+    background: #16171a;
+    border-radius: 14px;
+    padding: 2.2%;
+    box-shadow: 0 30px 60px rgb(0 0 0 / 0.35);
+    display: flex;
+    flex-direction: column;
+    gap: 1.2cqw;
+  }
+  :global([data-theme='light']) .flat {
+    --flap: #f6f5f1;
+    --glyph: #141518;
+    --key: #8f5300;
+    --gmuted: #6b7078;
+    background: #1d1e22;
+    box-shadow: 0 30px 60px rgb(0 0 0 / 0.18);
+  }
+  .flat-mobile {
+    display: none;
+  }
+  .flat :global(.flat-row) {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), minmax(0, 1fr));
+    gap: var(--gap);
+  }
+  .flat :global(.flat-name .flat-row) {
+    grid-template-columns: repeat(var(--name-cols), minmax(0, 1fr));
+    gap: 0.5cqw;
+  }
+  .flat :global(.flat-row span) {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 38 / 56;
+    background: linear-gradient(to bottom, var(--flap) 0 49.5%, rgb(0 0 0 / 0.35) 49.5% 50.5%, var(--flap) 50.5% 100%);
+    color: var(--glyph);
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: calc(100cqw / var(--cols) * 0.62);
+    line-height: 1;
+    border-radius: 2px;
+    white-space: pre;
+  }
+  .flat :global(.flat-name .flat-row span) {
+    aspect-ratio: 80 / 118;
+    font-size: calc(100cqw / var(--name-cols) * 0.66);
+  }
+  .flat :global(.flat-code) {
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap);
+  }
+  .flat :global(.flat-print) {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 1.3cqw;
+    color: #a9a49a;
+  }
+  .flat :global(.flat-row span.c-k) {
+    color: var(--key);
+  }
+  .flat :global(.flat-row span.c-m) {
+    color: var(--gmuted);
+  }
+  .flat :global(.flat-row span.c-h) {
+    background: linear-gradient(to bottom, #ffb000 0 49.5%, rgb(0 0 0 / 0.35) 49.5% 50.5%, #ffb000 50.5% 100%);
+    color: #16171a;
+  }
+
+  /* ---- below the board ---- */
+  .below {
+    display: grid;
+    grid-template-columns: minmax(0, 4fr) minmax(0, 4fr) minmax(0, 3fr);
+    column-gap: 48px;
+    row-gap: 32px;
+    padding: 8px var(--side) 56px;
+  }
+  .lede {
+    font-family: var(--mono);
+    font-size: 44px;
+    line-height: 1.12;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  .intro p {
+    max-width: 52ch;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 22px;
+    font-weight: 500;
+  }
+  .links a {
+    text-decoration-thickness: 2px;
+  }
+  .links .primary {
+    font-weight: 600;
+  }
+  .play {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .play[hidden] {
+    display: none;
+  }
+  .msg {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .msg label {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .msg input {
+    font-family: var(--mono);
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--ink);
+    background: var(--field);
+    border: 1px solid var(--ink);
+    border-radius: 4px;
+    height: 46px;
+    padding: 0 12px;
+    width: 100%;
+  }
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .buttons [hidden] {
+    display: none;
+  }
+  .note {
+    font-size: 15px;
+    min-height: 46px;
+  }
+  .demo-note {
+    font-size: 13px;
+    color: var(--muted);
+  }
+  .below-404 {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 8px var(--side) 56px;
+    max-width: 820px;
+  }
+  .below-404 ul {
+    list-style: none;
+    padding: 0;
+    font-family: var(--mono);
+    font-size: 17px;
+    font-weight: 600;
+  }
+  .below-404 li {
+    border-top: 1px solid var(--rule);
+    padding: 12px 0;
+  }
+  .below-404 li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  /* ---- event log ---- */
+  .console {
+    margin: 0 var(--side) 48px;
+    background: var(--night);
+    border: 1px solid var(--code-edge);
+    border-radius: 6px;
+    color: #cfcbc2;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    padding: 12px 16px 14px;
+  }
+  .console[hidden] {
+    display: none;
+  }
+  .console-head {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    color: var(--night-muted);
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--night-rule);
+    margin-bottom: 8px;
+  }
+  .dot {
+    color: var(--amber);
+  }
+  .console ol {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-height: 138px;
+  }
+  .console :global(li) {
+    display: grid;
+    grid-template-columns: 104px 84px minmax(0, 1fr);
+    column-gap: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .console :global(.t) {
+    color: var(--night-muted);
+  }
+  .console :global(.k) {
+    color: var(--amber);
+  }
+  .console :global(.v) {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media (max-width: 1100px) {
+    .below {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+    .lede {
+      grid-column: 1 / -1;
+    }
+  }
+  @media (max-width: 760px) {
+    .hero {
+      --scene-h: 520px;
+    }
+    .scene {
+      padding: 24px var(--side);
+    }
+    .flat-desktop {
+      display: none;
+    }
+    .flat-mobile {
+      display: flex;
+      width: min(100%, 420px);
+    }
+    .flat :global(.flat-print) {
+      font-size: 3cqw;
+    }
+    .below {
+      grid-template-columns: minmax(0, 1fr);
+      padding-bottom: 48px;
+    }
+    .lede {
+      font-size: 30px;
+    }
+    .msg {
+      display: none;
+    }
+    .console {
+      margin: 0 var(--side) 32px;
+    }
+    .console ol {
+      min-height: 120px;
+    }
+    .console :global(li) {
+      grid-template-columns: 96px 64px minmax(0, 1fr);
+    }
+  }
+</style>
+
+<script>
+  import { Board, type Variant } from '../scripts/board/board';
+  import { renderFlat } from '../scripts/board/flat-view';
+  import type { ThreeView } from '../scripts/board/three-view';
+
+  const hero = document.querySelector<HTMLElement>('[data-board]');
+  if (hero) {
+    const variant = (hero.dataset.variant as Variant) || 'home';
+    const scene = hero.querySelector<HTMLElement>('.scene')!;
+    const canvas = scene.querySelector('canvas')!;
+    const controls = hero.querySelector<HTMLElement>('[data-controls]');
+    const consoleEl = hero.querySelector<HTMLElement>('[data-console]')!;
+    const logEl = hero.querySelector<HTMLOListElement>('[data-log]')!;
+    const hudEl = hero.querySelector<HTMLElement>('[data-hud]')!;
+    const noteEl = hero.querySelector<HTMLElement>('[data-note]');
+    const bidBtn = hero.querySelector<HTMLButtonElement>('[data-bid]');
+    const skipBtn = hero.querySelector<HTMLButtonElement>('[data-skip]');
+    const msgInput = hero.querySelector<HTMLInputElement>('[data-msg]');
+    const small = window.matchMedia('(max-width: 760px)');
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    let board: Board | undefined;
+    let three: ThreeView | null = null;
+    let visible = true;
+
+    const renderUI = () => {
+      if (!board) return;
+      logEl.replaceChildren(
+        ...board.log.map((l) => {
+          const li = document.createElement('li');
+          for (const [cls, text] of [['t', l.t], ['k', l.k], ['v', l.v]]) {
+            const span = document.createElement('span');
+            span.className = cls;
+            span.textContent = text;
+            li.appendChild(span);
+          }
+          return li;
+        }),
+      );
+      if (noteEl) noteEl.textContent = board.note;
+      if (bidBtn) bidBtn.disabled = board.closed;
+    };
+
+    // Skip the 3D board when the visitor asked to save data. WebGL support is checked by creating
+    // the renderer itself, so no throwaway context is left behind.
+    const canUse3D = () => {
+      const conn = (navigator as Navigator & { connection?: { saveData?: boolean } }).connection;
+      return !conn?.saveData;
+    };
+
+    const load3D = async (forBoard: Board) => {
+      if (!canUse3D()) {
+        forBoard.addLog('webgl', 'data saver on · showing the flat board');
+        return;
+      }
+      try {
+        const { createThreeView } = await import('../scripts/board/three-view');
+        if (forBoard !== board) return; // the layout changed while loading
+        three = createThreeView(canvas, forBoard, { reduce, onHud: (s) => (hudEl.textContent = s) });
+        forBoard.views.add(three);
+        three.setActive(visible);
+        scene.classList.add('is-3d');
+      } catch (err) {
+        console.warn('3D board unavailable:', err);
+        forBoard.addLog('webgl', 'unavailable · showing the flat board');
+      }
+    };
+
+    const mount = () => {
+      board?.stop();
+      three?.dispose();
+      three = null;
+      scene.classList.remove('is-3d');
+      const b = new Board({ variant, mobile: small.matches, reduce, live: true });
+      board = b;
+      const flat = scene.querySelector<HTMLElement>(small.matches ? '.flat-mobile' : '.flat-desktop')!;
+      b.views.add(renderFlat(flat, b));
+      b.onChange = renderUI;
+      b.start();
+      renderUI();
+      const go = () => load3D(b);
+      if ('requestIdleCallback' in window) requestIdleCallback(go, { timeout: 1500 });
+      else setTimeout(go, 300);
+    };
+
+    if (controls) controls.hidden = false;
+    consoleEl.hidden = false;
+    if (skipBtn) skipBtn.hidden = !reduce;
+    bidBtn?.addEventListener('click', () => board?.bid());
+    hero.querySelector('[data-next]')?.addEventListener('click', () => board?.next());
+    skipBtn?.addEventListener('click', () => board?.skip());
+    msgInput?.addEventListener('input', () => board?.typeMessage(msgInput.value));
+    window.addEventListener('themechange', () => three?.applyTheme());
+    small.addEventListener('change', mount);
+    new IntersectionObserver(([entry]) => {
+      visible = entry.isIntersecting;
+      three?.setActive(visible);
+    }).observe(scene);
+
+    if (document.readyState === 'complete') mount();
+    else window.addEventListener('load', mount, { once: true });
+  }
+</script>

@@ -1,0 +1,534 @@
+---
+import { categories, edges, GRAPH, graphLayout, places, tools } from '../data/stack';
+import { detailHtml } from '../scripts/stack-detail';
+
+const g = graphLayout();
+const initial = { k: 'tool' as const, id: 'redis' };
+const hotTools = new Set([initial.id]);
+const hotPlaces = new Set(edges.filter((e) => e.tool === initial.id).map((e) => e.place));
+const count = (n: number) => `${n} ${n === 1 ? 'place' : 'places'}`;
+---
+
+<section id="stack" class="section stack" data-stack>
+  <div class="head">
+    <div class="intro">
+      <h2>// stack.graph</h2>
+      <p>Every tool here is wired to the jobs and projects where I used it, with what I actually did. Click anything, type a name, or walk it with the arrow keys.</p>
+    </div>
+    <div class="query" data-js hidden>
+      <label for="stack-q">where(</label>
+      <input id="stack-q" type="text" autocomplete="off" spellcheck="false" placeholder="redis" data-q />
+      <span aria-hidden="true">)</span>
+      <button type="button" class="btn" data-random>random()</button>
+    </div>
+  </div>
+  <div class="meta">
+    <span>{tools.length} tools · {places.length} places · {edges.length} links · every link comes from my CV or my code</span>
+    <span aria-live="polite" data-qnote></span>
+  </div>
+
+  <div class="graph-wrap">
+    <div class="graph-col">
+      <div class="cols-head" style={`width:${GRAPH.width}px`}>
+        <span>TOOLS · {tools.length}</span><span>WHERE I USED THEM · {places.length}</span>
+      </div>
+      <div class="graph" role="group" aria-label="Stack graph. Up and down move within a column, left and right jump along a link." style={`width:${GRAPH.width}px;height:${g.height}px`} data-graph data-sel-kind="tool">
+        <svg width={GRAPH.width} height={g.height} viewBox={`0 0 ${GRAPH.width} ${g.height}`} aria-hidden="true">
+          {g.paths.map((p) => <path class:list={['edge', { hot: p.tool === initial.id }]} d={p.d} data-tool={p.tool} data-place={p.place} />)}
+          {g.paths.map((p) => <path class:list={['packet', { hot: p.tool === initial.id }]} d={p.d} data-tool={p.tool} data-place={p.place} />)}
+        </svg>
+        {g.catTops.map((c) => <span class="cat" style={`top:${c.top}px`}>{c.label}</span>)}
+        {tools.map((t) => (
+          <button
+            type="button"
+            class="tool"
+            data-id={t.id}
+            data-kind="tool"
+            data-state={hotTools.has(t.id) ? 'on' : 'idle'}
+            aria-pressed={hotTools.has(t.id) ? 'true' : 'false'}
+            aria-label={`${t.name}, used at ${count(t.uses.length)}`}
+            style={`top:${g.toolTops[t.id]}px`}
+          >
+            <span>{t.name}</span><span class="count">{count(t.uses.length)}</span>
+          </button>
+        ))}
+        {places.map((p) => (
+          <button
+            type="button"
+            class="place"
+            data-id={p.id}
+            data-kind="place"
+            data-state={hotPlaces.has(p.id) ? 'con' : 'idle'}
+            aria-pressed="false"
+            style={`top:${g.placeTops[p.id]}px;left:${GRAPH.placeX}px`}
+          >
+            <span class="pname">{p.name}</span>
+            <span class="pkind">{p.kind} · {p.when}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+    <aside class="detail" aria-live="polite" data-detail set:html={detailHtml(initial)} />
+  </div>
+
+  <div class="chips">
+    <aside class="detail detail-mobile" aria-live="polite" id="stack-detail-mobile" data-detail set:html={detailHtml(initial)} />
+    <div class="chip-group">
+      <span class="cat-label">WHERE I USED THEM</span>
+      <div class="chip-row">
+        {places.map((p) => (
+          <button type="button" class="chip" data-id={p.id} data-kind="place" data-scroll data-state={hotPlaces.has(p.id) ? 'con' : 'idle'} aria-pressed="false">{p.name}</button>
+        ))}
+      </div>
+    </div>
+    {categories.map((cat) => (
+      <div class="chip-group">
+        <span class="cat-label">{cat}</span>
+        <div class="chip-row">
+          {tools.filter((t) => t.cat === cat).map((t) => (
+            <button type="button" class="chip" data-id={t.id} data-kind="tool" data-scroll data-state={hotTools.has(t.id) ? 'on' : 'idle'} aria-pressed={hotTools.has(t.id) ? 'true' : 'false'}>{t.name}</button>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .head {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 24px;
+    flex-wrap: wrap;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--ink);
+  }
+  .intro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-width: 640px;
+  }
+  .intro h2 {
+    font-family: var(--mono);
+    font-size: 44px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .intro p {
+    max-width: 58ch;
+    font-size: 17px;
+  }
+  .query {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--muted);
+  }
+  .query[hidden] {
+    display: none;
+  }
+  .query input {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 600;
+    width: 200px;
+    height: 44px;
+    padding: 0 12px;
+    color: var(--ink);
+    background: var(--panel);
+    border: 1px solid var(--ink);
+    border-radius: 4px;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    padding: 12px 0 28px;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  /* ---- desktop graph ---- */
+  .graph-wrap {
+    display: grid;
+    grid-template-columns: 900px minmax(0, 1fr);
+    column-gap: 48px;
+    align-items: start;
+  }
+  .cols-head {
+    display: flex;
+    justify-content: space-between;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+    padding-bottom: 10px;
+  }
+  .graph {
+    position: relative;
+  }
+  .graph svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: visible;
+  }
+  .edge {
+    fill: none;
+    stroke: var(--edge);
+    stroke-width: 1.2;
+  }
+  .edge.hot {
+    stroke: var(--hot);
+    stroke-width: 2;
+    stroke-opacity: 0.9;
+  }
+  .packet {
+    fill: none;
+    stroke: var(--packet);
+    stroke-width: 3.5;
+    stroke-linecap: round;
+    stroke-dasharray: 1.5 26;
+    opacity: 0;
+  }
+  .packet.hot {
+    opacity: 0.95;
+    animation: flow 0.9s linear infinite;
+  }
+  @keyframes flow {
+    from {
+      stroke-dashoffset: 27.5;
+    }
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+  .cat {
+    position: absolute;
+    left: 0;
+    height: 30px;
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 6px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .tool {
+    position: absolute;
+    left: 0;
+    width: 250px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 0 10px;
+    border: 0;
+    border-left: 3px solid var(--rule);
+    border-radius: 0 3px 3px 0;
+    background: transparent;
+    color: var(--idle-fg);
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    text-align: left;
+  }
+  .tool .count {
+    font-size: 11px;
+    opacity: 0.75;
+  }
+  .place {
+    position: absolute;
+    width: 250px;
+    height: 62px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2px;
+    padding: 0 14px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--panel);
+    color: var(--ink);
+    text-align: left;
+    font-family: var(--mono);
+  }
+  .pname {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  .pkind {
+    font-size: 11px;
+    opacity: 0.8;
+  }
+  [data-graph][data-sel-kind='place'] .tool[data-state='idle'],
+  [data-graph][data-sel-kind='tool'] .place[data-state='idle'] {
+    opacity: 0.55;
+  }
+  .tool[data-state='on'],
+  .place[data-state='on'],
+  .chip[data-state='on'] {
+    background: var(--amber);
+    color: #16171a;
+    border-color: var(--amber);
+    font-weight: 700;
+  }
+  .tool[data-state='con'],
+  .place[data-state='con'],
+  .chip[data-state='con'] {
+    background: var(--con-bg);
+    color: var(--con-fg);
+    border-color: var(--hot);
+    font-weight: 700;
+  }
+
+  /* ---- detail panel ---- */
+  .detail {
+    position: sticky;
+    top: 24px;
+    background: var(--panel);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .detail :global(.d-eyebrow) {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .detail :global(.d-name) {
+    font-family: var(--mono);
+    font-size: 34px;
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+  }
+  .detail :global(.d-sub),
+  .detail :global(.d-when) {
+    font-size: 15px;
+    color: var(--muted);
+  }
+  .detail :global(.d-when) {
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  .detail :global(.d-line) {
+    font-size: 16px;
+  }
+  .detail :global(.d-list) {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .detail :global(.d-item) {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 14px 0;
+    border-top: 1px solid var(--rule);
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .detail :global(.d-item-place) {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    column-gap: 12px;
+    padding: 9px 0;
+    align-items: baseline;
+    font-size: 14px;
+  }
+  .detail :global(.d-row) {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .detail :global(.d-meta) {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .detail :global(.d-link) {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--link);
+    background: none;
+    border: 0;
+    padding: 0;
+    min-height: 24px;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+  .detail :global(.d-case) {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+    padding-top: 4px;
+  }
+
+  /* ---- chips (narrow screens) ---- */
+  .chips {
+    display: none;
+    flex-direction: column;
+    gap: 22px;
+  }
+  .chip-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .cat-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    color: var(--muted);
+  }
+  .chip-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 500;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 6px;
+    border: 1px solid var(--rule);
+    background: var(--panel);
+    color: var(--ink);
+  }
+  .detail-mobile {
+    position: static;
+    padding: 18px;
+    scroll-margin-top: 16px;
+  }
+  .detail-mobile :global(.d-name) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 1240px) {
+    .graph-wrap {
+      display: none;
+    }
+    .chips {
+      display: flex;
+    }
+  }
+  @media (max-width: 760px) {
+    .intro h2 {
+      font-size: 30px;
+    }
+    .query input {
+      width: 150px;
+    }
+  }
+</style>
+
+<script>
+  import { tools, places } from '../data/stack';
+  import { detailHtml, neighbours, type Sel } from '../scripts/stack-detail';
+
+  const root = document.querySelector<HTMLElement>('[data-stack]');
+  if (root) {
+    const graph = root.querySelector<HTMLElement>('[data-graph]')!;
+    const details = root.querySelectorAll<HTMLElement>('[data-detail]');
+    const qnote = root.querySelector<HTMLElement>('[data-qnote]')!;
+    const input = root.querySelector<HTMLInputElement>('[data-q]')!;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let sel: Sel = { k: 'tool', id: 'redis' };
+
+    root.querySelector<HTMLElement>('[data-js]')!.hidden = false;
+
+    const select = (next: Sel, scroll = false) => {
+      sel = next;
+      const nb = new Set(neighbours(sel));
+      graph.dataset.selKind = sel.k;
+      root.querySelectorAll<HTMLElement>('[data-kind]').forEach((el) => {
+        const on = el.dataset.kind === sel.k && el.dataset.id === sel.id;
+        const con = el.dataset.kind !== sel.k && nb.has(el.dataset.id!);
+        el.dataset.state = on ? 'on' : con ? 'con' : 'idle';
+        el.setAttribute('aria-pressed', on ? 'true' : 'false');
+      });
+      graph.querySelectorAll<SVGPathElement>('path').forEach((p) => {
+        const hot = sel.k === 'tool' ? p.dataset.tool === sel.id : p.dataset.place === sel.id;
+        p.classList.toggle('hot', hot);
+      });
+      details.forEach((d) => (d.innerHTML = detailHtml(sel)));
+      if (scroll) {
+        const mobile = root.querySelector<HTMLElement>('#stack-detail-mobile');
+        if (mobile && mobile.offsetParent) mobile.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' });
+      }
+    };
+
+    root.addEventListener('click', (e) => {
+      const t = e.target as HTMLElement;
+      const btn = t.closest<HTMLElement>('[data-kind]');
+      if (btn) return select({ k: btn.dataset.kind as Sel['k'], id: btn.dataset.id! }, btn.hasAttribute('data-scroll'));
+      const goTool = t.closest<HTMLElement>('[data-go-tool]');
+      if (goTool) return select({ k: 'tool', id: goTool.dataset.goTool! }, true);
+      const goPlace = t.closest<HTMLElement>('[data-go-place]');
+      if (goPlace) return select({ k: 'place', id: goPlace.dataset.goPlace! }, true);
+    });
+
+    const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+    input.addEventListener('input', () => {
+      const q = norm(input.value);
+      if (!q) return (qnote.textContent = '');
+      const all = [...tools.map((t) => ({ k: 'tool' as const, x: t })), ...places.map((p) => ({ k: 'place' as const, x: p }))];
+      const hit = all.find((a) => norm(a.x.name).startsWith(q)) ?? all.find((a) => norm(a.x.name).includes(q));
+      if (hit) {
+        select({ k: hit.k, id: hit.x.id });
+        qnote.textContent = '→ ' + hit.x.name;
+      } else qnote.textContent = 'no match for "' + input.value + '" in my stack';
+    });
+
+    root.querySelector('[data-random]')!.addEventListener('click', () => {
+      const pool = tools.filter((t) => t.id !== sel.id);
+      const t = pool[Math.floor(Math.random() * pool.length)];
+      input.value = '';
+      select({ k: 'tool', id: t.id });
+      qnote.textContent = '→ ' + t.name;
+    });
+
+    graph.addEventListener('keydown', (e) => {
+      const t = e.target as HTMLElement;
+      const id = t.dataset.id;
+      const kind = t.dataset.kind as Sel['k'] | undefined;
+      if (!id || !kind) return;
+      const list = kind === 'tool' ? tools : places;
+      const i = list.findIndex((x) => x.id === id);
+      let next: Sel | null = null;
+      if (e.key === 'ArrowDown') next = { k: kind, id: list[Math.min(list.length - 1, i + 1)].id };
+      else if (e.key === 'ArrowUp') next = { k: kind, id: list[Math.max(0, i - 1)].id };
+      else if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+        const nb = neighbours({ k: kind, id });
+        if (nb.length) next = { k: kind === 'tool' ? 'place' : 'tool', id: nb[0] };
+      }
+      if (!next) return;
+      e.preventDefault();
+      select(next);
+      graph.querySelector<HTMLElement>(`[data-kind="${next.k}"][data-id="${next.id}"]`)?.focus();
+    });
+  }
+</script>
