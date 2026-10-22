@@ -1,0 +1,146 @@
+---
+import Flaps from './Flaps.astro';
+import { caseStudies } from '../data/work';
+
+// Long names get smaller tiles so they stay on one line, on a phone too.
+const flapSize = (word: string) => {
+  const w = Math.min(40, Math.floor((330 - 3 * (word.length - 1)) / word.length));
+  return `--flap-w:${w}px;--flap-h:${Math.round(w * 1.4)}px;--flap-f:${Math.round(w * 0.75)}px`;
+};
+---
+
+<section id="work" class="section">
+  <div class="section-head">
+    <h2>// selected work</h2>
+    <span>three things I built and run</span>
+  </div>
+  {caseStudies.map((w, i) => (
+    <article class="item">
+      <div class="name">
+        <span class="n">{String(i + 1).padStart(2, '0')} / {w.kind === 'project' ? 'project' : 'job'}</span>
+        <Flaps word={w.slug} style={flapSize(w.slug)} />
+        <h3>
+          {w.name} <span>· {w.role}</span>
+        </h3>
+      </div>
+      <div class="body">
+        <p>{w.summary}</p>
+        <dl>
+          {w.facts.map((f) => (
+            <div>
+              <dt>{f.k}</dt>
+              <dd>{f.v}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <div class="side">
+        <span class="stack">{w.stack}</span>
+        <div class="links">
+          <a href={`/work/${w.slug}`}>case-study →</a>
+          {w.links.map((l) => <a href={l.href}>{l.label}</a>)}
+        </div>
+      </div>
+    </article>
+  ))}
+</section>
+
+<style>
+  .item {
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr) 260px;
+    column-gap: 48px;
+    row-gap: 22px;
+    padding: 40px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .name {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .n {
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--muted);
+  }
+  h3 {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  h3 span {
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .body p {
+    max-width: 60ch;
+  }
+  dl {
+    display: flex;
+    flex-direction: column;
+    font-family: var(--mono);
+    font-size: 15px;
+  }
+  dl div {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr);
+    column-gap: 16px;
+    padding: 8px 0;
+    border-top: 1px solid var(--rule);
+  }
+  dt {
+    color: var(--muted);
+  }
+  dd {
+    font-weight: 700;
+  }
+  .side {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .stack {
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.7;
+    color: var(--muted);
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+  }
+  @media (max-width: 1240px) {
+    .item {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+    }
+    .side {
+      grid-column: 2;
+    }
+  }
+  @media (max-width: 760px) {
+    .item {
+      grid-template-columns: minmax(0, 1fr);
+      padding: 28px 0;
+    }
+    .side {
+      grid-column: auto;
+    }
+    dl div {
+      grid-template-columns: minmax(0, 1fr);
+      row-gap: 2px;
+    }
+    dt {
+      font-size: 13px;
+    }
+  }
+</style>

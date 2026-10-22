@@ -1,0 +1,213 @@
+---
+// A step-through diagram. Without JavaScript every step and its description is listed;
+// with it, one step shows at a time and the arrow keys move between them.
+interface Props {
+  title: string;
+  note: string;
+  nodes: [string, string][];
+}
+const { title, note, nodes } = Astro.props;
+---
+
+<figure class="diagram" data-diagram>
+  <figcaption>
+    <span>{title}</span>
+    <span class="count" data-count hidden>step 1 of {nodes.length}</span>
+  </figcaption>
+  <div class="steps" role="group" aria-label="Diagram steps. Left and right arrow keys move.">
+    {nodes.map(([label], i) => (
+      <div class="step">
+        <button type="button" data-step={i} aria-current={i === 0 ? 'step' : 'false'} class:list={{ on: i === 0 }}>{label}</button>
+        {i < nodes.length - 1 && <span class="arrow" aria-hidden="true" />}
+      </div>
+    ))}
+  </div>
+  <dl class="texts" aria-live="polite">
+    {nodes.map(([label, text]) => (
+      <div class="text" data-text>
+        <dt>{label}</dt>
+        <dd>{text}</dd>
+      </div>
+    ))}
+  </dl>
+  <div class="foot" data-foot hidden>
+    <span>{note}</span>
+    <div class="nav">
+      <button type="button" data-prev>← prev</button>
+      <button type="button" class="next" data-next>next →</button>
+    </div>
+  </div>
+</figure>
+
+<style>
+  .diagram {
+    background: var(--night);
+    color: var(--night-ink);
+    border: 1px solid var(--code-edge);
+    border-radius: 8px;
+    padding: 20px 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  figcaption {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--night-muted);
+  }
+  .count {
+    color: var(--amber);
+  }
+  .count[hidden],
+  .foot[hidden] {
+    display: none;
+  }
+  .steps {
+    display: flex;
+    align-items: stretch;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+  }
+  .step button {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    width: 100%;
+    min-height: 52px;
+    padding: 8px 6px;
+    border-radius: 6px;
+    border: 1px solid #3a3d44;
+    background: transparent;
+    color: var(--night-ink);
+  }
+  .step button.done {
+    background: #2b2310;
+    color: #ffd27a;
+    border-color: var(--amber);
+  }
+  .step button.on {
+    background: var(--amber);
+    color: #16171a;
+    border-color: var(--amber);
+  }
+  .arrow::before {
+    content: '→';
+    display: block;
+    padding: 4px 6px;
+    color: #5f646c;
+    font-family: var(--mono);
+  }
+  .texts {
+    border-top: 1px solid var(--night-rule);
+    padding-top: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 84px;
+  }
+  .text {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .text[hidden] {
+    display: none;
+  }
+  dt {
+    font-family: var(--mono);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--amber);
+  }
+  dd {
+    font-size: 16px;
+    line-height: 1.55;
+  }
+  .foot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--night-muted);
+  }
+  .nav {
+    display: flex;
+    gap: 8px;
+  }
+  .nav button {
+    font-family: var(--mono);
+    font-size: 13px;
+    min-height: 40px;
+    padding: 0 12px;
+    border-radius: 4px;
+    border: 1px solid #3a3d44;
+    background: transparent;
+    color: var(--night-ink);
+  }
+  .nav .next {
+    font-weight: 700;
+    border-color: var(--amber);
+    background: var(--amber);
+    color: #16171a;
+  }
+  @media (max-width: 760px) {
+    .diagram {
+      padding: 16px;
+    }
+    .steps,
+    .step {
+      flex-direction: column;
+    }
+    .arrow::before {
+      content: '↓';
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-diagram]').forEach((fig) => {
+    const buttons = [...fig.querySelectorAll<HTMLButtonElement>('[data-step]')];
+    const texts = [...fig.querySelectorAll<HTMLElement>('[data-text]')];
+    const count = fig.querySelector<HTMLElement>('[data-count]')!;
+    const n = buttons.length;
+    let step = 0;
+    const go = (i: number, focus = false) => {
+      step = Math.max(0, Math.min(n - 1, i));
+      buttons.forEach((b, j) => {
+        b.classList.toggle('on', j === step);
+        b.classList.toggle('done', j < step);
+        b.setAttribute('aria-current', j === step ? 'step' : 'false');
+      });
+      texts.forEach((t, j) => (t.hidden = j !== step));
+      count.textContent = `step ${step + 1} of ${n}`;
+      if (focus) buttons[step].focus();
+    };
+    count.hidden = false;
+    fig.querySelector<HTMLElement>('[data-foot]')!.hidden = false;
+    buttons.forEach((b, j) => b.addEventListener('click', () => go(j)));
+    fig.querySelector('[data-prev]')!.addEventListener('click', () => go(step - 1));
+    fig.querySelector('[data-next]')!.addEventListener('click', () => go(step === n - 1 ? 0 : step + 1));
+    fig.querySelector('.steps')!.addEventListener('keydown', (e) => {
+      const key = (e as KeyboardEvent).key;
+      if (key === 'ArrowRight' || key === 'ArrowDown') {
+        e.preventDefault();
+        go(step + 1, true);
+      } else if (key === 'ArrowLeft' || key === 'ArrowUp') {
+        e.preventDefault();
+        go(step - 1, true);
+      }
+    });
+    go(0);
+  });
+</script>

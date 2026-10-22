@@ -1,0 +1,13 @@
+---
+// A word spelled on split-flap tiles.
+interface Props {
+  word: string;
+  class?: string;
+  style?: string;
+}
+const { word, class: cls, style } = Astro.props;
+---
+
+<div class:list={['flaps', cls]} style={style} aria-hidden="true">
+  {word.split('').map((ch) => <span>{ch}</span>)}
+</div>

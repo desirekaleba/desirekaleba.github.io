@@ -1,12 +1,4 @@
 User-agent: *
 Allow: /
 
-# Sitemap
-Sitemap: https://desirekaleba.com/sitemap.xml
-
-# Crawl-delay for polite crawling
-Crawl-delay: 1
-
-# Disallow admin or private areas (if any)
-# Disallow: /admin/
-# Disallow: /private/
+Sitemap: https://desirekaleba.github.io/sitemap.xml
