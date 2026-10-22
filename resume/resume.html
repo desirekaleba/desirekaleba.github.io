@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Desire Kaleba · CV</title>
+<style>
+  @page { size: Letter; margin: 0.5in 0.6in; }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif; font-size: 9.6pt; line-height: 1.38; color: #111827; }
+  a { color: inherit; text-decoration: none; }
+  header { text-align: center; margin-bottom: 10pt; }
+  h1 { font-size: 21pt; letter-spacing: 0.02em; margin: 0; }
+  .title { font-size: 11pt; font-weight: 700; color: #164e63; margin: 2pt 0 4pt; }
+  .contact { font-size: 8.8pt; color: #374151; }
+  h2 { break-after: avoid-page; font-size: 10.5pt; color: #164e63; text-transform: uppercase; letter-spacing: 0.06em; margin: 11pt 0 4pt; padding-bottom: 2pt; border-bottom: 1px solid #cbd5e1; }
+  p { margin: 0 0 4pt; }
+  .role { display: flex; justify-content: space-between; gap: 12pt; margin-top: 7pt; }
+  .role b { font-size: 10pt; }
+  .role span { color: #4b5563; white-space: nowrap; }
+  .sub { color: #4b5563; font-size: 8.8pt; margin-bottom: 2pt; }
+  ul { margin: 2pt 0 0; padding-left: 13pt; }
+  li { margin-bottom: 2pt; }
+  .skills { display: grid; grid-template-columns: 78pt 1fr; gap: 1pt 8pt; }
+  .skills b { color: #111827; }
+  .keep { break-inside: avoid; }
+</style>
+</head>
+<body>
+<header>
+  <h1>DESIRE KALEBA</h1>
+  <div class="title">Senior Full-Stack &amp; AI Engineer</div>
+  <div class="contact">Nairobi, Kenya · Remote · <a href="mailto:desirekaleba@gmail.com">desirekaleba@gmail.com</a></div>
+  <div class="contact"><a href="https://desirekaleba.github.io">desirekaleba.github.io</a> · <a href="https://github.com/desirekaleba">github.com/desirekaleba</a> · <a href="https://www.linkedin.com/in/desire-kaleba-a0a122197">linkedin.com/in/desire-kaleba-a0a122197</a></div>
+</header>
+
+<h2>Summary</h2>
+<p>Full-stack engineer with 7 years in production. I built two products alone: <b>PageVow</b>, an AI page builder with paying customers and zero marketing spend, and <b>VelaBid</b>, a real-time car-auction marketplace. At <b>StartupBlink</b> I lead seven engineers on a platform 40+ governments rely on, serving ~18M requests a month at a ~70% cache-hit rate. I work AI-first, and I review and own everything that ships.</p>
+
+<div class="keep">
+<h2>Experience</h2>
+<div>
+  <div class="role"><b>StartupBlink · Lead Full-Stack Engineer</b><span>Oct 2023 – Present</span></div>
+  <div class="sub">Remote · Full-Stack Engineer, Oct 2022 – Sep 2023 · <a href="https://desirekaleba.github.io/work/startupblink">desirekaleba.github.io/work/startupblink</a></div>
+  <ul>
+    <li>Lead seven engineers on a startup-ecosystem intelligence platform that ranks 300,000+ startups across 2,000+ cities in 118 countries and is relied on by 40+ government clients.</li>
+    <li>Run a Cloudflare-fronted, Redis-cached platform serving 37K+ unique visitors a day and ~18M requests a month at a ~70% cache-hit rate.</li>
+    <li>Led an end-to-end platform refactor that raised user engagement 35% in 5 months.</li>
+    <li>Migrated legacy JavaScript into a TypeScript Turborepo of 10+ packages and apps (Node.js, tRPC, Prisma, MySQL, Redis, Next.js); its shared services are reused across 5+ apps.</li>
+    <li>Reworked CI/CD for 2+ production deploys a week and cut deployment time by 50%.</li>
+    <li>Brought structured AI-assisted engineering to the team: coding agents, MCP integrations, custom skills and multi-agent workflows, with human review on everything that ships.</li>
+  </ul>
+</div>
+</div>
+
+<div class="keep">
+<h2>Products I built alone</h2>
+<div>
+  <div class="role"><b>PageVow · Founder and solo engineer</b><span>Mar 2026 – Present</span></div>
+  <div class="sub"><a href="https://pagevow.com">pagevow.com</a> · case study: <a href="https://desirekaleba.github.io/work/pagevow">desirekaleba.github.io/work/pagevow</a></div>
+  <ul>
+    <li>AI page builder for birthdays, proposals, graduations and weddings: letters, albums and invitations in five languages. 123 people have made 600+ pages and sent 79 requests for team-made pages, with zero marketing spend; first $200 in organic revenue.</li>
+    <li>Charged from day one: a hardened Paystack boundary with signed checkout tokens, idempotent and replay-fingerprinted webhooks, server-enforced amounts and a persistent security audit trail.</li>
+    <li>AI pages are written only from the customer’s own notes, then validated and optionally reviewed by a person; unchecked model output is never published.</li>
+    <li>TypeScript Turborepo (Next.js, NestJS, Drizzle, PostgreSQL, Cloudflare R2): 640+ commits and 373 test files, from unit tests to API integration tests on a real Postgres and 52 Playwright journeys.</li>
+  </ul>
+</div>
+</div>
+<div class="keep">
+  <div class="role"><b>VelaBid · Founder and solo engineer</b><span>Oct 2025 – Present</span></div>
+  <div class="sub"><a href="https://velabid.com">velabid.com</a> · invite-only beta · case study: <a href="https://desirekaleba.github.io/work/velabid">desirekaleba.github.io/work/velabid</a></div>
+  <ul>
+    <li>Real-time collector-car auctions: server-validated bids placed with optimistic locking and atomic Redis steps, a soft close that stops sniping, reserve prices and buy-now.</li>
+    <li>Escrowed Stripe payments with automated settlement and payouts, modelled as recoverable state transitions; KYC checkpoints, dispute handling and a full audit log.</li>
+    <li>Event-driven NestJS backend with BullMQ workers, Next.js frontend, Drizzle on PostgreSQL (RDS), S3/CloudFront media and OpenTelemetry + Prometheus. Built in about three months (176 commits), with integration tests for bids, the soft close and settlement.</li>
+  </ul>
+</div>
+
+<div class="keep">
+<h2>Earlier experience</h2>
+<div>
+  <div class="role"><b>Entendre Finance · Software Engineer (Contract)</b><span>Sep 2022 – May 2023</span></div>
+  <div class="sub">Remote (New York) · acquired by MoonPay</div>
+  <ul>
+    <li>Built serverless backend infrastructure (Node.js, AWS Lambda, MongoDB) in an Nx/Lerna monorepo, powering automated crypto accounting across millions of on-chain transactions.</li>
+    <li>Integrated 5+ blockchain networks, including Solana, Arbitrum and Optimism; shared modules cut the effort to onboard each new chain.</li>
+  </ul>
+</div>
+</div>
+<div class="keep">
+  <div class="role"><b>Side Hustle · Node.js Mentor &amp; Curriculum Developer</b><span>Feb 2022 – Dec 2022</span></div>
+  <ul>
+    <li>Mentored 1,800+ developers in backend engineering and system design; wrote the Node.js curriculum and produced 50+ training videos.</li>
+  </ul>
+</div>
+<div class="keep">
+  <div class="role"><b>Manaknight Digital · Senior Backend / Full-Stack Engineer</b><span>May 2021 – Jul 2022</span></div>
+  <div class="sub">Remote (Toronto)</div>
+  <ul>
+    <li>Built backend services and APIs for 5 client products and e-commerce platforms (Node.js, PHP, AWS, MongoDB, OAuth2), including a Go service for a client integration and custom Shopify integrations.</li>
+    <li>Cut latency 67% through backend architecture and query optimization; reduced production incidents by introducing automated testing and structured code review.</li>
+  </ul>
+</div>
+<div class="keep">
+  <div class="role"><b>FastoServices · Software Engineer (Backend / Cloud)</b><span>Oct 2019 – May 2021</span></div>
+  <div class="sub">Kampala, Uganda</div>
+  <ul>
+    <li>Deployed cloud-native services on AWS (Fargate, SNS, SQS) with Docker, Terraform and Ansible; instrumented Datadog observability across client engagements.</li>
+  </ul>
+</div>
+<div class="keep">
+  <div class="role"><b>Fulusi · Full-Stack Engineer</b><span>Aug 2019 – Oct 2019</span></div>
+  <div class="sub">Kampala, Uganda · React, Redux, Django</div>
+</div>
+
+<h2>Skills</h2>
+<div class="skills">
+  <b>Languages</b><span>TypeScript, JavaScript, Go, Python, SQL</span>
+  <b>Backend</b><span>Node.js, NestJS, tRPC, REST, GraphQL, WebSockets (Socket.IO), BullMQ, event-driven and serverless systems</span>
+  <b>Frontend</b><span>React, Next.js</span>
+  <b>Data</b><span>PostgreSQL, MySQL, MongoDB, Redis, Prisma, Drizzle</span>
+  <b>Cloud</b><span>AWS (Lambda, ECS/Fargate, RDS, S3, SQS, SNS), Cloudflare, Docker, Kubernetes, Terraform, CI/CD</span>
+  <b>Quality</b><span>Playwright, Jest, Cypress, Supertest, Datadog, OpenTelemetry, Prometheus</span>
+  <b>Payments</b><span>Stripe, Paystack</span>
+  <b>AI</b><span>OpenAI and Claude APIs, coding agents, MCP, custom skills, multi-agent workflows, RAG, structured outputs</span>
+</div>
+
+<h2>Education</h2>
+<p><b>BSc Computer Science</b> · International University of East Africa, Kampala</p>
+<p>AWS Certified Cloud Practitioner · Advanced React (Triplebyte) · English and French (professional), Swahili (native)</p>
+</body>
+</html>

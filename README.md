@@ -22,7 +22,9 @@ Node 24 (Astro needs 22.23.4 or later). pnpm 9.12.0, pinned in `package.json`.
 - `src/scripts/board/` is the departures board in the hero. `board.ts` holds its state, `flat-view.ts`
   draws it in HTML (first paint, and the fallback without WebGL), and `three-view.ts` draws it in
   three.js once the page is idle. The wall behind the 3D board shows the source of `board.ts`.
-- `public/assets/resume.pdf` is the CV linked from the site. `public/og.png` is the link preview image.
+- `resume/resume.html` is the CV source. Open it in Chrome and print to PDF (Letter, no headers) to update
+  `public/assets/resume.pdf`, which the site links to. It has no phone number on purpose. `public/og.png` is the
+  link preview image.
 
 ## Deploy
 
