@@ -129,13 +129,17 @@ const isHome = variant === 'home';
     height: 100%;
     display: block;
     opacity: 0;
+    /* Until the 3D board is showing, let the pointer through to the flat board underneath. */
+    pointer-events: none;
     transition: opacity 0.6s ease;
   }
   .scene.is-3d canvas {
     opacity: 1;
+    pointer-events: auto;
   }
   .scene.is-3d .flat {
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.4s ease;
   }
 
@@ -189,6 +193,9 @@ const isHome = variant === 'home';
     line-height: 1;
     border-radius: 2px;
     white-space: pre;
+  }
+  .flat :global(.flat-row.clickable) {
+    cursor: pointer;
   }
   .flat :global(.flat-name .flat-row span) {
     aspect-ratio: 80 / 118;
