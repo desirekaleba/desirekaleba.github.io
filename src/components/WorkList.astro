@@ -4,7 +4,7 @@ import { caseStudies } from '../data/work';
 
 // Long names get smaller tiles so they stay on one line, on a phone too.
 const flapSize = (word: string) => {
-  const w = Math.min(40, Math.floor((330 - 3 * (word.length - 1)) / word.length));
+  const w = Math.min(40, Math.floor((300 - 3 * (word.length - 1)) / word.length));
   return `--flap-w:${w}px;--flap-h:${Math.round(w * 1.4)}px;--flap-f:${Math.round(w * 0.75)}px`;
 };
 ---
@@ -48,7 +48,7 @@ const flapSize = (word: string) => {
 <style>
   .item {
     display: grid;
-    grid-template-columns: 360px minmax(0, 1fr) 260px;
+    grid-template-columns: 300px minmax(0, 1fr) 240px;
     column-gap: 48px;
     row-gap: 22px;
     padding: 40px 0;
@@ -89,7 +89,7 @@ const flapSize = (word: string) => {
   }
   dl div {
     display: grid;
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: 180px minmax(0, 1fr);
     column-gap: 16px;
     padding: 8px 0;
     border-top: 1px solid var(--rule);

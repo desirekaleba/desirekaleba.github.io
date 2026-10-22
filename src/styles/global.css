@@ -9,7 +9,10 @@
   --night-ink: #e4e2dc;
   --night-muted: #8b8f96;
   --night-rule: #2a2c31;
-  --side: 40px;
+  /* Content is at most 1200px wide and centred, with at least 64px either side.
+     % resolves against the section's width wherever --side is used as padding or margin. */
+  --content: 1200px;
+  --side: max(64px, calc((100% - var(--content)) / 2));
   color-scheme: dark;
 
   --bg: #0b0c0e;

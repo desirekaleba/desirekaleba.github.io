@@ -68,7 +68,7 @@ export const tools: Tool[] = cats.flatMap(([cat, list]) => list.map(([id, name, 
 export const edges = tools.flatMap((t) => t.uses.map(([place, text]) => ({ tool: t.id, place, text })));
 
 // Desktop graph geometry, shared by the server render and the client script.
-export const GRAPH = { width: 900, catH: 30, toolH: 24, toolW: 250, placeX: 650, placeH: 62 };
+export const GRAPH = { width: 810, catH: 30, toolH: 24, toolW: 250, placeX: 560, placeH: 62 };
 
 export function graphLayout() {
   let y = 0;
@@ -92,7 +92,7 @@ export function graphLayout() {
   const paths = edges.map((e) => {
     const y1 = toolTops[e.tool] + 12;
     const y2 = placeTops[e.place] + GRAPH.placeH / 2;
-    return { ...e, d: `M${x1} ${y1} C${x1 + 170} ${y1} ${x2 - 170} ${y2} ${x2} ${y2}` };
+    return { ...e, d: `M${x1} ${y1} C${x1 + 140} ${y1} ${x2 - 140} ${y2} ${x2} ${y2}` };
   });
   return { height, catTops, toolTops, placeTops, paths };
 }
