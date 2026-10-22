@@ -1,5 +1,5 @@
-// Case studies. Facts come from my CV, the PageVow repo and zintir.com.
-// A section with no content is not rendered; TODOs mark what is still missing.
+// Case studies. Facts come from my CV, the PageVow and VelaBid repos, and zintir.com.
+// A section with no content is not rendered.
 
 export type Fact = { k: string; v: string };
 export type Decision = { t: string; d: string };
@@ -136,24 +136,24 @@ export const caseStudies: CaseStudy[] = [
       'How I built VelaBid alone: an auction marketplace for rare performance cars with server-checked bids, a soft close that stops sniping, and escrowed payments.',
     role: 'founder, solo engineer',
     summary:
-      'An auction marketplace for rare performance and collector cars, in public beta: listings, timed auctions, real-time bidding, watchlists, messaging and notifications.',
+      'An auction marketplace for rare performance and collector cars, in an invite-only public beta: listings, timed auctions, real-time bidding, watchlists, messaging and notifications.',
     facts: [
       { k: 'bids', v: 'validated on the server' },
       { k: 'soft_close', v: 'late bids extend the auction' },
       { k: 'settlement', v: 'state transitions with failure recovery' },
     ],
-    // TODO: add the ORM (Drizzle or Prisma) once confirmed.
-    stack: 'NestJS · PostgreSQL (RDS) · Socket.IO · BullMQ/Redis · Stripe · S3/CloudFront · OpenTelemetry',
+    stack: 'TypeScript Turborepo · Next.js · NestJS · Drizzle · PostgreSQL (RDS) · Socket.IO · BullMQ/Redis · Stripe · S3/CloudFront',
     meta: [
       { k: 'role', v: 'Founder and solo engineer' },
-      { k: 'status', v: 'Public beta at velabid.com' },
-      { k: 'stack', v: 'NestJS · PostgreSQL (RDS) · Socket.IO · BullMQ/Redis · Stripe · S3/CloudFront' },
+      { k: 'status', v: 'Invite-only public beta at velabid.com' },
+      { k: 'since', v: 'October 2025' },
+      { k: 'stack', v: 'TypeScript Turborepo · Next.js · NestJS · Drizzle · PostgreSQL (RDS) · Socket.IO · BullMQ/Redis · Stripe · S3/CloudFront' },
     ],
     links: [{ label: 'velabid.com ↗', href: 'https://velabid.com' }],
     numbers: [
       { v: 'Soft close', k: 'late bids extend the auction' },
       { v: 'Server-side', k: 'bid validation' },
-      { v: 'Public beta', k: 'live at velabid.com' },
+      { v: 'Public beta', k: 'invite-only, at velabid.com' },
     ],
     sections: [
       {
@@ -173,9 +173,11 @@ export const caseStudies: CaseStudy[] = [
         title: 'What I built',
         paras: ['All of it, as founder and the only engineer. Here is an auction’s life, step by step.'],
         bullets: [
+          'A TypeScript Turborepo: a Next.js web app, and a NestJS API on PostgreSQL through Drizzle.',
           'Listings, timed auctions, real-time bidding over Socket.IO, watchlists, messaging and notifications.',
-          'Bid validation on the server, safeguards that reject conflicting or invalid bids, and a soft close.',
-          'Payments through Stripe. Payments, escrow and settlement are modelled as state transitions with failure recovery.',
+          'Bid validation on the server, safeguards that reject conflicting or invalid bids, and a soft close. Reserve prices and buy-now too.',
+          'Escrowed payments through Stripe, with automated settlement and payouts. Payments, escrow and settlement are modelled as state transitions with failure recovery.',
+          'Trust and safety: KYC checkpoints, moderated messaging, dispute handling and a full audit log.',
           'An event-driven backend: BullMQ workers on Redis for auctions, settlement and notifications.',
           'Media from S3/CloudFront. Observability with OpenTelemetry and Prometheus.',
         ],
@@ -184,7 +186,7 @@ export const caseStudies: CaseStudy[] = [
       {
         title: 'The hard parts, and the decisions',
         decisions: [
-          { t: 'The server decides what counts as a bid.', d: 'Every bid is validated on the server, and safeguards reject conflicting or invalid bids.' },
+          { t: 'The server decides what counts as a bid.', d: 'Every bid is validated on the server and placed in a transaction with optimistic locking and an atomic Redis step, so conflicting or invalid bids are rejected.' },
           { t: 'A soft close, so sniping doesn’t work.', d: 'A bid that arrives late extends the auction, which gives other bidders time to answer.' },
           { t: 'Money moves as state transitions.', d: 'Payments, escrow and settlement are modelled as explicit states, so a failed step can be recovered.' },
           { t: 'Slow work runs on workers.', d: 'BullMQ workers on Redis handle auctions, settlement and notifications.' },
@@ -192,9 +194,18 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         title: 'What happened',
-        paras: ['VelaBid is in public beta at velabid.com.'],
+        paras: [
+          'VelaBid is in an invite-only public beta at velabid.com. Listing, bidding, messaging and payout flows all work. Payments run in Stripe test mode, and marketplace fees stay off until general availability.',
+        ],
       },
-      // TODO: "What I’d do next" for VelaBid.
+      {
+        title: 'What I’d do next',
+        bullets: [
+          'Switch payments from Stripe test mode to live, and turn on marketplace fees.',
+          'Open the beta beyond invites.',
+          'Let real auctions show where the soft close and settlement need tuning.',
+        ],
+      },
     ],
     diagram: {
       title: 'velabid / an auction’s life (simplified)',
@@ -203,7 +214,7 @@ export const caseStudies: CaseStudy[] = [
         ['Listed', 'A car goes up for auction. Media is served from S3/CloudFront.'],
         ['Live', 'Real-time bidding over Socket.IO. Every bid is validated on the server; conflicting or invalid bids are rejected.'],
         ['Soft close', 'A late bid extends the auction, so nobody wins by sniping.'],
-        ['Settlement', 'Payments go through Stripe. Escrow and settlement are state transitions that recover from failure.'],
+        ['Settlement', 'Escrowed payments through Stripe, in test mode during the beta. Settlement and payouts are state transitions that recover from failure.'],
         ['Notified', 'BullMQ workers on Redis send the notifications.'],
       ],
     },
@@ -281,7 +292,6 @@ export const caseStudies: CaseStudy[] = [
           { v: '37K+', k: 'unique visitors a day' },
         ],
       },
-      // TODO: "What I’d do next" at StartupBlink.
     ],
     diagram: {
       title: 'startupblink / a request’s path (simplified)',

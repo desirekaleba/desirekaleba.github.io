@@ -1,11 +1,11 @@
-// Every tool is wired to the jobs and projects where I used it. Every link comes from my CV.
+// Every tool is wired to the jobs and projects where I used it. Every link comes from my CV or my code.
 
 export type Place = { id: string; name: string; kind: string; role: string; when: string; line: string; link?: string };
 export type Tool = { id: string; name: string; cat: string; uses: [string, string][] };
 
 export const places: Place[] = [
   { id: 'pagevow', name: 'PageVow', kind: 'Project', role: 'Founder · solo engineer', when: 'live', line: 'An AI page builder for personal pages. 123 users and 600+ pages with zero marketing.', link: '/work/pagevow' },
-  { id: 'velabid', name: 'VelaBid', kind: 'Project', role: 'Founder · solo engineer', when: 'public beta', line: 'A collector-car auction marketplace with server-checked bids and a soft close.', link: '/work/velabid' },
+  { id: 'velabid', name: 'VelaBid', kind: 'Project', role: 'Founder · solo engineer', when: 'invite-only beta', line: 'A collector-car auction marketplace with server-checked bids, a soft close and escrowed payments.', link: '/work/velabid' },
   { id: 'startupblink', name: 'StartupBlink', kind: 'Job', role: 'Lead Full-Stack Engineer', when: 'Oct 2022 → now', line: 'Startup-ecosystem intelligence: 300,000+ startups, 118 countries, 40+ government clients. I lead seven engineers.', link: '/work/startupblink' },
   { id: 'entendre', name: 'Entendre Finance', kind: 'Contract', role: 'Software Engineer', when: 'Sep 2022 – May 2023', line: 'Automated crypto accounting across millions of on-chain transactions. Later acquired by MoonPay.' },
   { id: 'sidehustle', name: 'Side Hustle', kind: 'Job', role: 'Node.js Mentor & Curriculum Developer', when: 'Feb – Dec 2022', line: 'Mentored 1,800+ developers, wrote the backend curriculum and made 50+ training videos.' },
@@ -21,24 +21,24 @@ const cats: [string, [string, string, [string, string][]][]][] = [
   ]],
   ['FRAMEWORKS', [
     ['nestjs', 'NestJS', [['pagevow', 'The API that owns the payment boundary.'], ['velabid', 'Event-driven backend for bids, auctions and settlement.']]],
-    ['nextjs', 'Next.js', [['startupblink', 'React/Next.js apps in the monorepo.'], ['pagevow', 'The web app.']]],
+    ['nextjs', 'Next.js', [['startupblink', 'React/Next.js apps in the monorepo.'], ['pagevow', 'The web app.'], ['velabid', 'The web app, with Stripe Elements and live bids.']]],
     ['react', 'React', [['startupblink', 'React/Next.js across the platform.']]],
     ['trpc', 'tRPC', [['startupblink', 'Part of the monorepo’s stack, with Prisma and MySQL.']]],
-    ['turborepo', 'Turborepo', [['startupblink', 'I lead the monorepo’s architecture. Its shared services are reused across 5+ apps.'], ['pagevow', 'One monorepo for the whole product.']]],
+    ['turborepo', 'Turborepo', [['startupblink', 'I lead the monorepo’s architecture. Its shared services are reused across 5+ apps.'], ['pagevow', 'One monorepo for the whole product.'], ['velabid', 'The API, the web app and shared packages in one monorepo.']]],
     ['socketio', 'Socket.IO', [['velabid', 'Real-time bidding.']]],
   ]],
   ['DATA', [
     ['postgres', 'PostgreSQL', [['pagevow', 'The database, accessed with Drizzle.'], ['velabid', 'Runs on AWS RDS.']]],
     ['mysql', 'MySQL', [['startupblink', 'The platform database, accessed with Prisma.']]],
-    ['redis', 'Redis', [['startupblink', 'Cache behind Cloudflare: ~70% hit rate on 596K+ requests a day.'], ['velabid', 'Queues for the BullMQ workers.']]],
+    ['redis', 'Redis', [['startupblink', 'Cache behind Cloudflare: ~70% hit rate on 596K+ requests a day.'], ['velabid', 'Queues for the BullMQ workers, and atomic steps in bid placement.']]],
     ['prisma', 'Prisma', [['startupblink', 'ORM over MySQL.']]],
-    ['drizzle', 'Drizzle', [['pagevow', 'ORM over PostgreSQL, including webhook idempotency keys.']]],
+    ['drizzle', 'Drizzle', [['pagevow', 'ORM over PostgreSQL, including webhook idempotency keys.'], ['velabid', 'ORM over PostgreSQL for auctions, bids and settlement.']]],
     ['mongodb', 'MongoDB', [['entendre', 'With serverless Node.js on Lambda.']]],
     ['bullmq', 'BullMQ', [['velabid', 'Workers for auctions, settlement and notifications.']]],
     ['chains', 'Blockchains', [['entendre', '5+ chains, including Solana, Arbitrum and Optimism.']]],
   ]],
   ['PAYMENTS', [
-    ['stripe', 'Stripe', [['velabid', 'Payments. Escrow and settlement are state transitions with failure recovery.']]],
+    ['stripe', 'Stripe', [['velabid', 'Escrowed payments, settlement and payouts, in test mode during the beta.']]],
     ['paystack', 'Paystack', [['pagevow', 'Signed checkout tokens, idempotent webhooks, replay fingerprints, server-set amounts and an audit trail.']]],
   ]],
   ['CLOUD & DELIVERY', [
