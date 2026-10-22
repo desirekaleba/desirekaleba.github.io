@@ -30,7 +30,7 @@ const cats: [string, [string, string, [string, string][]][]][] = [
   ['DATA', [
     ['postgres', 'PostgreSQL', [['pagevow', 'The database, accessed with Drizzle.'], ['velabid', 'Runs on AWS RDS.']]],
     ['mysql', 'MySQL', [['startupblink', 'The platform database, accessed with Prisma.']]],
-    ['redis', 'Redis', [['startupblink', 'Cache behind Cloudflare: ~70% hit rate on 596K+ requests a day.'], ['velabid', 'Queues for the BullMQ workers, and atomic steps in bid placement.']]],
+    ['redis', 'Redis', [['startupblink', 'Cache behind Cloudflare: ~70% hit rate on ~18M requests a month.'], ['velabid', 'Queues for the BullMQ workers, and atomic steps in bid placement.']]],
     ['prisma', 'Prisma', [['startupblink', 'ORM over MySQL.']]],
     ['drizzle', 'Drizzle', [['pagevow', 'ORM over PostgreSQL, including webhook idempotency keys.'], ['velabid', 'ORM over PostgreSQL for auctions, bids and settlement.']]],
     ['mongodb', 'MongoDB', [['entendre', 'With serverless Node.js on Lambda.']]],
@@ -59,7 +59,7 @@ const cats: [string, [string, string, [string, string][]][]][] = [
     ['mcp', 'MCP + custom skills', [['startupblink', 'MCP integrations, custom skills and multi-agent workflows.']]],
     ['aigen', 'AI generation', [['pagevow', 'Pages are generated, validated and optionally reviewed by a human before anyone pays.']]],
     ['review', 'Code review', [['startupblink', 'I set standards and review for a team of seven.'], ['manaknight', 'Added it with automated tests; production incidents went down.']]],
-    ['tests', 'Automated tests', [['manaknight', 'Added them; production incidents went down.']]],
+    ['tests', 'Automated tests', [['pagevow', '373 test files: unit, API integration on a real Postgres, and 52 Playwright journeys.'], ['velabid', 'Integration tests for bids, the soft close and settlement.'], ['manaknight', 'Added them; production incidents went down.']]],
   ]],
 ];
 

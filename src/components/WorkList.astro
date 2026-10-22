@@ -2,6 +2,9 @@
 import Flaps from './Flaps.astro';
 import { caseStudies } from '../data/work';
 
+// Only my own products. StartupBlink is my employer; it lives under experience.
+const products = caseStudies.filter((c) => c.kind === 'project');
+
 // Long names get smaller tiles so they stay on one line, on a phone too.
 const flapSize = (word: string) => {
   const w = Math.min(40, Math.floor((300 - 3 * (word.length - 1)) / word.length));
@@ -11,13 +14,13 @@ const flapSize = (word: string) => {
 
 <section id="work" class="section">
   <div class="section-head">
-    <h2>// selected work</h2>
-    <span>three things I built and run</span>
+    <h2>// things i built</h2>
+    <span>two products, built and run alone</span>
   </div>
-  {caseStudies.map((w, i) => (
+  {products.map((w, i) => (
     <article class="item">
       <div class="name">
-        <span class="n">{String(i + 1).padStart(2, '0')} / {w.kind === 'project' ? 'project' : 'job'}</span>
+        <span class="n">{String(i + 1).padStart(2, '0')} / product</span>
         <Flaps word={w.slug} style={flapSize(w.slug)} />
         <h3>
           {w.name} <span>· {w.role}</span>

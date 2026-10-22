@@ -4,16 +4,22 @@ import { howIBuild } from '../data/experience';
 const amber = '#FFB000';
 const mut = '#7E838B';
 const txt = '#E4E2DC';
-const flow = [
-  { t: '// how a change gets to production', color: mut },
-  { t: 'const draft = await agents.run(task, {', color: txt },
-  { t: '  tools: ["claude", "codex", "mcp"],', color: txt },
-  { t: '  for: ["implement", "refactor", "test",', color: txt },
-  { t: '        "debug", "architecture"],', color: txt },
-  { t: '});', color: txt },
-  { t: '', color: txt },
-  { t: 'const ok = await desire.review(draft);', color: amber },
-  { t: 'if (ok) ship(draft); // and I own it after', color: txt },
+// An excerpt from PageVow's CLAUDE.md, the rules my coding agents work under (rewrapped).
+// n is the line number in that file; wrapped continuation lines have none.
+const rules = [
+  { n: 18, t: '## Testing — every change ships with its tests', color: amber },
+  { n: 19, t: '- Every new feature and every behaviour change comes', color: txt },
+  { t: '  with tests in the same commit. No tests, not done.', color: txt },
+  { n: 20, t: '- Every bug fix adds a regression test that fails', color: txt },
+  { t: '  without the fix (check it by reverting the fix once).', color: txt },
+  { n: 27, t: '- Tests never call real services (OpenAI, R2, Paystack,', color: txt },
+  { t: '  email) and never use the real .env keys; the suites', color: txt },
+  { t: '  refuse to run if they see one.', color: txt },
+  { n: 28, t: '- Never weaken, skip or delete a test to get green.', color: txt },
+  { t: '  If a test is wrong, fix the test and say why in the', color: txt },
+  { t: '  commit.', color: txt },
+  { t: '', color: mut },
+  { t: '# 373 test files · 52 Playwright journeys', color: mut },
 ];
 ---
 
@@ -37,10 +43,10 @@ const flow = [
       </ol>
     </div>
     <figure>
-      <figcaption><span>~/desire-kaleba/workflow.ts</span><span>the rule</span></figcaption>
+      <figcaption><span>~/pagevow/CLAUDE.md</span><span>the rules my agents work under</span></figcaption>
       <div class="code">
-        {flow.map((l, i) => (
-          <div class="line"><span class="ln">{i + 1}</span><span class="src" style={`color:${l.color}`}>{l.t}</span></div>
+        {rules.map((l) => (
+          <div class="line"><span class="ln">{l.n ?? ''}</span><span class="src" style={`color:${l.color}`}>{l.t}</span></div>
         ))}
       </div>
     </figure>

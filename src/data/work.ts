@@ -40,23 +40,23 @@ export const caseStudies: CaseStudy[] = [
       'How I built and run PageVow alone: personal pages for life’s big moments, an AI pipeline that never publishes unchecked output, and a hardened Paystack payment flow.',
     role: 'founder, solo engineer',
     summary:
-      'Personal pages for birthdays, proposals, graduations and weddings: letters, albums and invitations. AI writes from the customer’s own notes, nothing is published unchecked, and publishing is the step you pay for.',
+      'Personal pages for birthdays, proposals, graduations and weddings: letters, albums and invitations. 123 people have made 600+ pages, about five each, and nobody found it through an ad. AI writes from the customer’s own notes, and nothing is published unchecked.',
     facts: [
-      { k: 'users', v: '123' },
-      { k: 'pages_generated', v: '600+' },
+      { k: 'pages_generated', v: '600+ from 123 users' },
+      { k: 'team_made_requests', v: '79' },
       { k: 'marketing_spend', v: '0 (first $200 came organically)' },
     ],
     stack: 'TypeScript Turborepo · Next.js · NestJS · Drizzle · PostgreSQL · Cloudflare R2 · Paystack',
     meta: [
       { k: 'role', v: 'Founder and solo engineer' },
       { k: 'status', v: 'Live at pagevow.com' },
-      { k: 'since', v: 'March 2026' },
+      { k: 'since', v: 'March 2026 · 640+ commits' },
       { k: 'stack', v: 'TypeScript Turborepo · Next.js · NestJS · Drizzle · PostgreSQL · Cloudflare R2 · Paystack' },
     ],
     links: [{ label: 'pagevow.com ↗', href: 'https://pagevow.com' }],
     numbers: [
-      { v: '123', k: 'users' },
-      { v: '600+', k: 'pages generated' },
+      { v: '600+', k: 'pages, made by 123 people' },
+      { v: '79', k: 'requests for team-made pages' },
       { v: '$0', k: 'spent on marketing' },
     ],
     sections: [
@@ -75,19 +75,22 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         title: 'What I built',
-        paras: ['All of it, as founder and the only engineer. The spine is a five-step pipeline. Click through it.'],
+        paras: ['All of it, as founder and the only engineer: 640+ commits since March 2026. The spine is a five-step pipeline. Click through it.'],
         bullets: [
           'A TypeScript Turborepo: a Next.js web app, and a NestJS API that owns the payment boundary.',
+          '373 test files: 252 for the web app, 69 API integration tests against a real Postgres, and 52 Playwright journeys. Every change ships with its tests.',
           'The generate → validate → review → pay → publish pipeline.',
           'Validation and optional human review for every piece of model output.',
           'Hardened Paystack payments: signed checkout tokens, idempotent webhooks, replay fingerprinting, server-set amounts and a persistent security audit trail.',
           'Published pages with QR sharing, RSVPs, media and analytics.',
+          'A WhatsApp share button wherever a page is ready to send, with each link tagged (via=wa) so I can see what WhatsApp brings in.',
         ],
         diagram: true,
       },
       {
         title: 'The hard parts, and the decisions',
         decisions: [
+          { t: 'Charge from day one.', d: 'Paystack checkout was part of the first day’s commits, so every page since has been a real test of whether people will pay.' },
           { t: 'Model output never goes straight to publish.', d: 'Every generated page is validated, and can go to a human for review, before it can be published.' },
           { t: 'AI writes only from the customer’s notes.', d: 'Captions and pages are written from what the customer told us, so a page says what they meant, not what a model invented.' },
           { t: 'Try first, pay to publish.', d: 'A free, watermarked 24-hour preview, no card needed. Each page is a single purchase, with no subscription to explain or support.' },
@@ -100,8 +103,8 @@ export const caseStudies: CaseStudy[] = [
         paras: ['With zero marketing:'],
         numbers: [
           { v: '123', k: 'users' },
-          { v: '600+', k: 'pages generated' },
-          { v: '79', k: 'customer requests' },
+          { v: '600+', k: 'pages, about five each' },
+          { v: '79', k: 'requests for team-made pages' },
           { v: '$200', k: 'first organic revenue' },
         ],
       },
@@ -171,7 +174,7 @@ export const caseStudies: CaseStudy[] = [
       },
       {
         title: 'What I built',
-        paras: ['All of it, as founder and the only engineer. Here is an auction’s life, step by step.'],
+        paras: ['All of it, as founder and the only engineer: 176 commits from October 2025 to January 2026. Here is an auction’s life, step by step.'],
         bullets: [
           'A TypeScript Turborepo: a Next.js web app, and a NestJS API on PostgreSQL through Drizzle.',
           'Listings, timed auctions, real-time bidding over Socket.IO, watchlists, messaging and notifications.',
@@ -180,6 +183,7 @@ export const caseStudies: CaseStudy[] = [
           'Trust and safety: KYC checkpoints, moderated messaging, dispute handling and a full audit log.',
           'An event-driven backend: BullMQ workers on Redis for auctions, settlement and notifications.',
           'Media from S3/CloudFront. Observability with OpenTelemetry and Prometheus.',
+          'Integration tests for the flows that move money or pick a winner: bids, the soft close and settlement.',
         ],
         diagram: true,
       },
@@ -224,14 +228,14 @@ export const caseStudies: CaseStudy[] = [
     slug: 'startupblink',
     name: 'StartupBlink',
     kind: 'job · lead full-stack engineer',
-    oneLine: 'I lead the seven engineers behind 596K+ requests a day.',
+    oneLine: 'I lead the seven engineers behind ~18M requests a month.',
     description:
-      'My work as lead full-stack engineer at StartupBlink: a TypeScript monorepo, a Cloudflare and Redis setup serving 596K+ requests a day, and a team of seven.',
+      'My work as lead full-stack engineer at StartupBlink: a TypeScript monorepo, a Cloudflare and Redis setup serving ~18M requests a month, and a team of seven.',
     role: 'lead full-stack engineer, team of 7',
     summary:
       'A global startup-ecosystem intelligence platform: 300,000+ startups ranked across 2,000+ cities in 118 countries, relied on by 40+ government clients.',
     facts: [
-      { k: 'requests_per_day', v: '596K+' },
+      { k: 'requests_per_month', v: '~18M' },
       { k: 'cache_hit_rate', v: '~70%' },
       { k: 'engagement', v: '+35% in 5 months, after a refactor I led' },
     ],
@@ -244,7 +248,7 @@ export const caseStudies: CaseStudy[] = [
     ],
     links: [{ label: 'startupblink.com ↗', href: 'https://www.startupblink.com' }],
     numbers: [
-      { v: '596K+', k: 'requests a day' },
+      { v: '~18M', k: 'requests a month' },
       { v: '~70%', k: 'cache-hit rate' },
       { v: '+35%', k: 'engagement in 5 months' },
     ],
@@ -277,7 +281,7 @@ export const caseStudies: CaseStudy[] = [
         title: 'The hard parts, and the decisions',
         decisions: [
           { t: 'One typed monorepo.', d: 'Legacy JavaScript moved into a TypeScript Turborepo of 10+ packages and apps. Its shared services are reused across 5+ apps.' },
-          { t: 'Cache before compute.', d: 'Cloudflare in front, Redis behind: a ~70% cache-hit rate on 596K+ requests a day.' },
+          { t: 'Cache before compute.', d: 'Cloudflare in front, Redis behind: a ~70% cache-hit rate on ~18M requests a month.' },
           { t: 'Ship often.', d: '2+ production deploys a week, with deploy time cut by 50%.' },
           { t: 'AI-assisted, human-reviewed.', d: 'Agents help with the work. People review everything that ships.' },
         ],
@@ -297,7 +301,7 @@ export const caseStudies: CaseStudy[] = [
       title: 'startupblink / a request’s path (simplified)',
       note: 'Click a step, or use the arrow keys.',
       nodes: [
-        ['Visitors', '37K+ unique visitors and 596K+ requests a day.'],
+        ['Visitors', '37K+ unique visitors a day, and about 18M requests a month.'],
         ['Cloudflare', 'The edge in front of everything. I operate and tune it.'],
         ['Redis', 'The cache behind Cloudflare. Together they reach a ~70% cache-hit rate.'],
         ['Apps', 'React/Next.js apps and Node.js services using tRPC, in a Turborepo of 10+ packages and apps.'],

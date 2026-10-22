@@ -11,13 +11,13 @@ export const site = {
   location: 'Nairobi, Kenya',
   languages: ['English', 'French', 'Swahili'],
   description:
-    'Desire Kaleba, lead engineer at StartupBlink in Nairobi. I build products end to end and run them in production: PageVow, VelaBid, and a platform serving 596K+ requests a day.',
+    'Desire Kaleba, lead engineer at StartupBlink in Nairobi. I built PageVow and VelaBid alone and run them in production, and lead seven engineers on a platform 40+ governments rely on.',
 };
 
 export const nav = [
-  { href: '/#work', label: 'work/' },
-  { href: '/#stack', label: 'stack/' },
-  { href: '/#how', label: 'how-i-build/' },
+  { href: '/#work', label: 'built/' },
   { href: '/#exp', label: 'experience/' },
+  { href: '/#how', label: 'how-i-build/' },
+  { href: '/#stack', label: 'stack/' },
   { href: '/#contact', label: 'contact/' },
 ];
