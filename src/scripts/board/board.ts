@@ -26,7 +26,7 @@ export const WINDOW = 30;
 
 const PV = ['123 users', '600+ pages', '79 requests', '0 marketing', '$200 organic'];
 const PV_MOBILE = PV.slice(0, 4);
-const SB = ['596K+ req/day', '~70% cached', 'team of 7', '2+ deploys/wk', '118 countries'];
+const SB = ['~18M req/month', '~70% cached', 'team of 7', '2+ deploys/wk', '118 countries'];
 
 type Layout = {
   rows: { pv: number; vbTime: number; sb: number; time: number; msg: number };
@@ -125,7 +125,7 @@ export class Board {
         : ['# 404.yaml', 'status: 404', 'route: not found', 'shipped_here: nothing', '', 'try:', '  - /', '  - /work/pagevow', '  - /work/velabid', '  - /work/startupblink', '  - desirekaleba@gmail.com'])[i] ?? '';
     }
     if (this.mobile) {
-      return ['role: Lead Engineer', 'at: StartupBlink', 'from: Nairobi', 'pagevow: ' + PV_MOBILE[this.pvI % PV_MOBILE.length], 'velabid_demo: ' + this.vbText(), 'traffic: 596K+/day', '# desirekaleba', '#   @gmail.com'][i] ?? '';
+      return ['role: Lead Engineer', 'at: StartupBlink', 'from: Nairobi', 'pagevow: ' + PV_MOBILE[this.pvI % PV_MOBILE.length], 'velabid_demo: ' + this.vbText(), 'traffic: ~18M req/mo', '# desirekaleba', '#   @gmail.com'][i] ?? '';
     }
     const time = this.live ? '# nairobi ' + this.lastTime + ' utc+3' : '# nairobi · utc+3';
     return ['# hover a line to flip it', 'role: Lead Engineer', 'at: StartupBlink', 'from: Nairobi, Kenya', 'remote: true',

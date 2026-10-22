@@ -5,7 +5,7 @@ import { credentials, experience } from '../data/experience';
 <section id="exp" class="section">
   <div class="section-head">
     <h2>// git log --career</h2>
-    <span>6+ years in production · startups in the US, Canada, Europe, Israel and Africa</span>
+    <span>7 years in production · startups in the US, Canada, Europe, Israel and Africa</span>
   </div>
   <ol>
     {experience.map((e) => (
@@ -17,6 +17,12 @@ import { credentials, experience } from '../data/experience';
             {e.role} <span>@ {e.org}</span>
           </span>
           <span>{e.hi}</span>
+          {e.facts && (
+            <ul class="facts">
+              {e.facts.map((f) => <li>{f}</li>)}
+            </ul>
+          )}
+          {e.link && <a class="case" href={e.link}>my work there, as a case study →</a>}
         </div>
       </li>
     ))}
@@ -62,6 +68,7 @@ import { credentials, experience } from '../data/experience';
     flex-direction: column;
     gap: 2px;
     font-size: 16px;
+    max-width: 80ch;
   }
   .role {
     font-family: var(--mono);
@@ -70,6 +77,29 @@ import { credentials, experience } from '../data/experience';
   .role span {
     font-weight: 400;
     color: var(--muted);
+  }
+  .facts {
+    list-style: none;
+    padding: 0;
+    margin-top: 8px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  .facts li {
+    display: block;
+    padding: 2px 10px;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    color: var(--ink);
+  }
+  .case {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
   }
   .creds {
     display: flex;
