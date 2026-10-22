@@ -9,6 +9,8 @@ export type Panel = { id: 'name' | 'code'; lines: string[]; cls: string[] };
 
 export interface BoardView {
   setRow(i: number, row: Row): void;
+  // Re-flip a line's flaps in place, landing on the same text.
+  replay?(i: number): void;
   highlight?(method: string): void;
 }
 
@@ -255,6 +257,44 @@ export class Board {
   next() {
     this.flipRow('pagevow', true);
     this.flipRow('startupblink', true);
+  }
+
+  // Which named line (if any) row i belongs to.
+  rowName(i: number): RowName | null {
+    const hits = this.layout().hits;
+    for (const name of Object.keys(hits) as RowName[]) {
+      const [a, b] = hits[name]!;
+      if (i >= a && i <= b) return name;
+    }
+    return null;
+  }
+
+  // Hovering a line flips it: lines with more than one value move to the next one,
+  // every other line re-flips its letters in place.
+  private lastReplay: Record<number, number> = {};
+  hoverRow(i: number) {
+    const name = this.rowName(i);
+    if (name === 'pagevow' || name === 'startupblink') return this.flipRow(name);
+    const now = performance.now();
+    if (now - (this.lastReplay[i] ?? 0) < 600) return;
+    this.lastReplay[i] = now;
+    this.idle = 0;
+    this.views.forEach((view) => view.replay?.(i));
+    this.addLog('flip', 'line ' + (i + 1));
+    this.highlight('hoverRow');
+  }
+
+  clickRow(i: number) {
+    const name = this.rowName(i);
+    if (name === 'velabid') return this.bid();
+    if (name === 'email') {
+      this.addLog('mailto', 'desirekaleba@gmail.com');
+      window.location.href = 'mailto:desirekaleba@gmail.com';
+      return;
+    }
+    if (name) return this.flipRow(name, true);
+    this.lastReplay[i] = 0;
+    this.hoverRow(i);
   }
 
   private typeTimer = 0;

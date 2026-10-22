@@ -31,7 +31,7 @@ import {
   WebGLRenderer,
 } from 'three';
 import boardSource from './board.ts?raw';
-import { CHARSET, VMAP, type Board, type BoardView, type Row, type RowName } from './board';
+import { CHARSET, VMAP, type Board, type BoardView, type Row } from './board';
 
 const N = CHARSET.length;
 const MONO = '"JetBrains Mono Variable", ui-monospace, Menlo, monospace';
@@ -304,20 +304,18 @@ export function createThreeView(
   }
   drawPrint();
 
-  // Invisible hit areas over the lines you can click.
+  // One invisible hit area per panel; the line under the pointer is worked out from where it lands.
   const code = built.code;
-  const cpw = code.cols * (code.cw + code.gap) - code.gap;
   const hitMeshes: Mesh[] = [];
-  (Object.keys(L.hits) as RowName[]).forEach((k) => {
-    const h = L.hits[k]!;
-    const y0 = code.y - h[0] * (code.ch + code.gap);
-    const y1 = code.y - (h[1] + 1) * (code.ch + code.gap) + code.gap;
-    const hm = new Mesh(new PlaneGeometry(cpw, y0 - y1), new MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }));
-    hm.position.set(code.x + cpw / 2, (y0 + y1) / 2, 3);
-    hm.userData.row = k;
+  for (const pn of [built.name, code]) {
+    const pw = pn.cols * (pn.cw + pn.gap) - pn.gap;
+    const ph = pn.lines.length * (pn.ch + pn.gap) - pn.gap;
+    const hm = new Mesh(new PlaneGeometry(pw, ph), new MeshBasicMaterial({ transparent: true, opacity: 0, depthWrite: false }));
+    hm.position.set(pn.x + pw / 2, pn.y - ph / 2, 3);
+    hm.userData.panel = pn;
     root.add(hm);
     hitMeshes.push(hm);
-  });
+  }
 
   // Housing, screws and the cables it hangs from.
   minX -= housingPad;
@@ -451,27 +449,51 @@ export function createThreeView(
   const nameCells = built.name.cells;
   const cursor = nameCells[nameCells.length - 1][nameCells[nameCells.length - 1].length - 1];
 
+  // Re-flip cells in place: wind each lettered flap back three glyphs and let it flip forward again.
+  function replayCells(list: Cell[]) {
+    list.forEach((cl, i) => {
+      if (cl.tci === 0 || cl.flipping || cl.settle > 0 || active.includes(cl)) return;
+      cl.cur = (cl.tci - 3 + N) % N;
+      cl.v = cl.tv;
+      const g = cl.cur + cl.v * N;
+      cl.top.geometry = cl.pn.G.top[g];
+      cl.bot.geometry = cl.pn.G.bot[g];
+      cl.delay = i * 0.012;
+      active.push(cl);
+    });
+    dirty = true;
+  }
+
   // ---- pointer ----
   const mouse = { x: 0, y: 0, tx: 0, ty: 0 };
   const ray = new Raycaster();
   const ndc = new Vector2();
   let hover: string | null = null;
 
-  function rowAt(e: PointerEvent | MouseEvent): RowName | null {
+  function lineAt(e: PointerEvent | MouseEvent): { pn: BuiltPanel; row: number } | null {
     const r = canvas.getBoundingClientRect();
     ndc.set(((e.clientX - r.left) / r.width) * 2 - 1, -((e.clientY - r.top) / r.height) * 2 + 1);
     ray.setFromCamera(ndc, camera);
-    const hit = ray.intersectObjects(hitMeshes, false);
-    return hit.length ? (hit[0].object.userData.row as RowName) : null;
+    const hit = ray.intersectObjects(hitMeshes, false)[0];
+    if (!hit) return null;
+    const pn = hit.object.userData.panel as BuiltPanel;
+    const local = root.worldToLocal(hit.point.clone());
+    const row = Math.floor((pn.y - local.y) / (pn.ch + pn.gap));
+    return row >= 0 && row < pn.lines.length ? { pn, row } : null;
   }
   const onMove = (e: PointerEvent) => {
     const r = canvas.getBoundingClientRect();
     mouse.tx = ((e.clientX - r.left) / r.width) * 2 - 1;
     mouse.ty = ((e.clientY - r.top) / r.height) * 2 - 1;
-    const row = rowAt(e);
-    canvas.style.cursor = row ? 'pointer' : 'default';
-    if (row && row !== hover && e.pointerType === 'mouse' && (row === 'pagevow' || row === 'startupblink')) board.flipRow(row);
-    hover = row;
+    const at = lineAt(e);
+    const clickable = !!at && at.pn.id === 'code' && !!board.rowName(at.row);
+    canvas.style.cursor = clickable ? 'pointer' : 'default';
+    const key = at ? at.pn.id + ':' + at.row : null;
+    if (at && key !== hover && e.pointerType === 'mouse') {
+      if (at.pn.id === 'code') board.hoverRow(at.row);
+      else replayCells(at.pn.cells[at.row]);
+    }
+    hover = key;
   };
   const onLeave = () => {
     hover = null;
@@ -479,13 +501,10 @@ export function createThreeView(
     mouse.ty = 0;
   };
   const onClick = (e: MouseEvent) => {
-    const row = rowAt(e);
-    if (row === 'email') {
-      board.addLog('mailto', 'desirekaleba@gmail.com');
-      window.location.href = 'mailto:desirekaleba@gmail.com';
-      return;
-    }
-    if (row) board.flipRow(row);
+    const at = lineAt(e);
+    if (!at) return;
+    if (at.pn.id === 'code') board.clickRow(at.row);
+    else replayCells(at.pn.cells[at.row]);
   };
   canvas.addEventListener('pointermove', onMove);
   canvas.addEventListener('pointerleave', onLeave);
@@ -673,7 +692,7 @@ export function createThreeView(
       const m = /^ {2}(?:private |public )?([A-Za-z]+)\(.*\)(?::[^{]*)?\s*\{\s*$/.exec(l);
       if (m) starts.push({ name: m[1], i });
     });
-    const picks = ['second', 'setLeft', 'bid', 'flipRow', 'typeMessage', 'rowSpec', 'tokenize', 'codeRow', 'next', 'skip'];
+    const picks = ['second', 'setLeft', 'bid', 'flipRow', 'hoverRow', 'clickRow', 'typeMessage', 'rowSpec', 'tokenize', 'codeRow', 'next', 'skip'];
     let lines: { n: number; text: string }[] = [];
     const ranges: Record<string, { from: number; to: number }> = {};
     for (const nameP of picks) {
@@ -816,6 +835,10 @@ export function createThreeView(
     setRow(i: number, row: Row) {
       const list = built.code.cells[i];
       if (list) setCells(list, row.text, row.cls);
+    },
+    replay(i: number) {
+      const list = built.code.cells[i];
+      if (list) replayCells(list);
     },
     highlight(method: string) {
       codeWall.highlight(method);
